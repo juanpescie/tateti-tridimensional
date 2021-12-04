@@ -1,26 +1,16 @@
 #ifndef CASILLERO_H_
 #define CASILLERO_H_
 
-enum Estado{
-	HABILITADO, DESHABILITADO
-};
-
 class Casillero{
 private:
-	char ficha;
-	Estado estado;
+	char Ficha;
 
 public:
 	Casillero();
-	char obtenerFicha();
-	Estado obtenerEstado();
+	~Casillero();
 	void setFicha(char ficha);
-	bool estaHabilitado();
-	void deshabilitar();
-	void habilitar();
-	bool estaVacio();
+	char mostrarFicha();
 };
-
 
 
 #endif /* CASILLERO_H_ */
