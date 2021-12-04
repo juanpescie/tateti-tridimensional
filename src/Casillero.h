@@ -7,15 +7,11 @@ enum Estado{
 
 class Casillero{
 private:
-	int numeroDeFila;
-	int numeroDeColumna;
 	char ficha;
 	Estado estado;
 
 public:
-	Casillero(int numeroDeFila, int numeroDeColumna);
-	int obtenerNumeroDeFila();
-	int obtenerNumeroDeColumna();
+	Casillero();
 	char obtenerFicha();
 	Estado obtenerEstado();
 	void setFicha(char ficha);
