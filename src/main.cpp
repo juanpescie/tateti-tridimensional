@@ -4,14 +4,14 @@
 
 using namespace std;
 
-const int dimension = 3;
-
 int main(){
-	TATETI *tateti = new TATETI(dimension, dimension, dimension);
+	TATETI *tateti = new TATETI;
 
-	tateti->imprimirTableros();
+	tateti->iniciarJuego();
 
-	delete tateti;
+	tateti->jugarPartida();
+
+	tateti->mostrarScore();
 
 	return 0;
 }

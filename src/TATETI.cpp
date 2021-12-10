@@ -32,19 +32,15 @@ void TATETI::iniciarJuego(){
 	this->inicializarJugadores();
 
 	cout<<"\n";
-}
 
-/*TATETI::~TATETI(){
-	delete this->tablero;
-	delete this->jugadores;
-}*/
+}
 
 void TATETI::mostrarBienvenida(){
 	cout<<"\t\t\t\t.:: Tateti ::."<<endl;
 
 }
 
-bool esUnNumero(string cadena){
+bool esUnNumero1(string cadena){
 	for(unsigned int i = 0; i < cadena.length(); i++){
 		if(!isdigit(cadena[i])){
 			return false;
@@ -67,7 +63,7 @@ void TATETI::pedirDimensionesDelTablero(){
 			cout<<"Ingrese el numero de columnas del tablero: ";
 			cin>>dimension;
 
-			if(esUnNumero(dimension)){
+			if(esUnNumero1(dimension)){
 				numeroDeColumnas = atoi(dimension.c_str());
 				contadorDeDimensiones++;
 			}
@@ -80,7 +76,7 @@ void TATETI::pedirDimensionesDelTablero(){
 			cout<<"Ingrese el numero de filas del tablero: ";
 			cin>>dimension;
 
-			if(esUnNumero(dimension)){
+			if(esUnNumero1(dimension)){
 				numeroDeFilas = atoi(dimension.c_str());
 				contadorDeDimensiones++;
 			}
@@ -93,7 +89,7 @@ void TATETI::pedirDimensionesDelTablero(){
 			cout<<"Ingrese la profundidad del tablero: ";
 			cin>>dimension;
 
-			if(esUnNumero(dimension)){
+			if(esUnNumero1(dimension)){
 				profundidad = atoi(dimension.c_str());
 				contadorDeDimensiones++;
 			}
@@ -114,7 +110,7 @@ void TATETI::inicializarJugadores(){
 		cout<<"Ingrese la cantidad de jugadores: ";
 		cin>>cadena;
 
-		if(esUnNumero(cadena)){
+		if(esUnNumero1(cadena)){
 			this->cantidadDeJugadores = atoi(cadena.c_str());
 			seIngresoUnNumero = true;
 		}
@@ -126,15 +122,16 @@ void TATETI::inicializarJugadores(){
 	int contador = 1;
 
 	while(contador <= this->cantidadDeJugadores){
-		cout<<"Jugador "<<contador<<endl;
-		cout<<"\nIngrese el nombre del jugador: ";
+		cout<<"\nJugador "<<contador<<endl;
+		cout<<"Ingrese el nombre del jugador: ";
 		cin>>cadena;
 
 		char ficha;
-		cout<<"Ingrese la ficha del jugador";
+		cout<<"Ingrese la ficha del jugador: ";
 		cin>>ficha;
 
-		this->jugadores->acolar(new Jugador(cadena, contador, ficha));
+		Jugador *jugadorActual = new Jugador(cadena, contador, ficha);
+		this->jugadores->acolar(jugadorActual);
 
 		contador++;
 	}
@@ -159,25 +156,28 @@ void TATETI::jugarPartida(){
 		cout<<"Profundidad: ";
 		cin>>cadenaProfundidad;
 
-		if(esUnNumero(cadenaColumna) ||
-				esUnNumero(cadenaFila) ||
-				esUnNumero(cadenaProfundidad)){
+		if(esUnNumero1(cadenaColumna) ||
+				esUnNumero1(cadenaFila) ||
+				esUnNumero1(cadenaProfundidad)){
 
 			int columna = atoi(cadenaColumna.c_str());
 			int fila = atoi(cadenaFila.c_str());
 			int profundidad = atoi(cadenaProfundidad.c_str());
 
 			if(validarCoordenadas(columna,fila,profundidad)){
-				if(!this->tablero->casilleroEstaVacio(columna, fila, profundidad)){
+				if(this->tablero->casilleroEstaVacio(columna, fila, profundidad)){
+					//cout<<"Insertando ficha"<<endl;
 					this->tablero->getCasilla(columna, fila, profundidad)->setFicha(jugadorActual->obtenerFicha());
 
-					if(this->verificarGanador(jugadorActual->obtenerFicha())){
+					/*if(this->verificarGanador(jugadorActual->obtenerFicha())){
 						cout<<jugadorActual->obtenerNombre()<<" gano la partida"<<endl;
 						jugadorActual->ganoLaPartida();
-					}
+					}*/
 
+					//cout<<"Desacolo jugador"<<endl;
 					this->jugadores->desacolar();
 					this->jugadores->acolar(jugadorActual);
+					this->tablero->mostrarTodasLasFichasPorCapas();
 				}
 				else{
 					cout<<"El casillero no esta vacio"<<endl;
@@ -204,4 +204,8 @@ bool TATETI::validarCoordenadas(int columna, int fila, int profundidad){
 	else{
 		return false;
 	}
+}
+
+bool TATETI::verificarGanador(char ficha){
+	return true;
 }

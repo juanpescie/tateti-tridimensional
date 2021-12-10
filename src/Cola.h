@@ -1,8 +1,9 @@
 #ifndef COLA_H_
 #define COLA_H_
 
-#include "Nodo.h"
 #include <iostream>
+
+#include "Nodo.h"
 
 #ifndef NULL
 #define NULL 0
@@ -33,16 +34,18 @@ void Cola<T>::acolar(T elemento){
 		this->cola = new Nodo<T>(elemento);
 	}
 
-	Nodo<T> *aux = this->cola;
-	bool listo = false;
+	else{
+		Nodo<T> *aux = this->cola;
+		bool listo = false;
 
-	while(!listo){
-		if(aux->getSiguiente() == NULL){
-			aux->setSiguiente(new Nodo<T>(elemento));
-			listo = true;
-		}
-		else{
-			aux = aux->getSiguiente();
+		while(!listo){
+			if(aux->getSiguiente() == NULL){
+				aux->setSiguiente(new Nodo<T>(elemento));
+				listo = true;
+			}
+			else{
+				aux = aux->getSiguiente();
+			}
 		}
 	}
 }
@@ -60,7 +63,7 @@ template <class T>
 T Cola<T>::front(){
 	if(this->cola == NULL){
 		std::cout<<"Cola vacia"<<std::endl;
-		return -1;
+		throw "Cola vacia";
 	}
 
 	else{

@@ -3,30 +3,35 @@
 
 #include "Casillero.h"
 #include "Lista.h"
+#include "EasyBMP.h"
+#include "EasyBMP_font.h"
 
 class Tablero{
 private:
 
 	Lista<Lista<Lista<Casillero*>*>*>* casilleros;
+
 	int altura;
 	int ancho;
 	int profundidad;
+	bool profundidadValida(int profundidad);
+	bool alturaValida(int altura);
+	bool anchoValido(int ancho);
 
 public:
-	Tablero(int cantidadColumnas, int cantidadFilas, int Profundidad);
+	Tablero(int Profundidad, int cantidadFilas, int cantidadColumnas);
 	int getAltura();
 	int getAncho();
 	int getProfundidad();
-	~Tablero();
-	Casillero* getCasilla(int columna, int fila, int profundidad);
-	void setCasilla(int columna, int fila, int profundidad, char ficha);
-
-	void mostrarTodasLasFichasPorCapas();
-	void mostrarTableroDelantero();//Muestra la cara delantera del tablero
-	void mostrarTableroDeAtras();//Muestra la cara de atras del tablero
-	void mostrarTableroIzquierdo();//Muestra la cara izquierdo del tablero
-	void mostrarTableroDerecho();//Muestra la cara derecha del tablero
+	Casillero* getCasilla(int profundidad, int fila, int columna);
+	void setCasilla(int profundidad,int fila, int columna, char ficha);
+	bool existeCasilla(int profundidad,int fila, int columna);
+	bool hayTateti(Casillero* casilleroAChequear, int cantidadDeFichasParaGanar);
+	bool casilleroEstaVacio(int profundidad, int fila, int columna);
+	void generarBitMap(std::string nombreDelArchivo);
+	void mostrarTableroPorCapas();
 };
+
 
 
 
