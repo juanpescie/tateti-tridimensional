@@ -7,7 +7,7 @@ Jugador::Jugador(std::string nombre, char ficha){
 	this->numeroDeCartasActual = 0;
 	this->cantidadDePartidasGanadas = 0;
 	this->ficha = ficha;
-	//this->cartas = new Lista<Carta*>;
+	this->cantidadDeCartasDisponibles = 0;
 }
 
 std::string Jugador::obtenerNombre(){
@@ -26,15 +26,6 @@ char Jugador::obtenerFicha(){
 	return this->ficha;
 }
 
-/*void Jugador::agregarCarta(Carta *carta){
-	this->cartas->add(carta);
-
+void Jugador::agregarCarta(){
+	this->cantidadDeCartasDisponibles++;
 }
-
-void Jugador::mostrarCartas(){
-	for(int i = 1; i <= this->numeroDeCartasActual; i++){
-		cout<<i<<": "<<this->cartas->get(i)->mostrarDescripcion()<<endl;
-	}
-
-	cout<<endl;
-}*/

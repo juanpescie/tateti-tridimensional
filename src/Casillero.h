@@ -34,6 +34,7 @@ public:
 	bool tieneAdyacente1(int i, int j);
 	bool tieneAdyacente(int profundidad, int fila, int columna);
 	bool estaOcupado();
+	bool estaDisponible();
 	bool tienenLaMismaFicha(Casillero* otroCasillero);
 };
 

@@ -3,7 +3,6 @@
 
 #include "Lista.h"
 #include <string>
-//#include "Carta.h"
 
 class Jugador{
 private:
@@ -11,16 +10,15 @@ private:
 	char ficha;
 	int numeroDeCartasActual;
 	int cantidadDePartidasGanadas;
-	//Lista<Carta*> *cartas;
+	int cantidadDeCartasDisponibles;
 
 public:
 	Jugador(std::string nombre, char ficha);
 	std::string obtenerNombre();
 	int obtenerNumeroDeJugador();
 	int obtenerCantidadDePartidasGanadas();
+	void agregarCarta();
 	char obtenerFicha();
-	//void agregarCarta(Carta *carta);
-	//void mostrarCartas();
 	void ganoLaPartida();
 };
 

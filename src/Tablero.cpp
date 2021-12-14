@@ -40,7 +40,7 @@ Tablero::Tablero(int Profundidad, int cantidadFilas, int cantidadColumnas){
 				for(int l=-1; l<2; l++){
 					for(int m=-1; m<2; m++){
 						for(int n=-1; n<2; n++){
-							if(this->existeCasilla(i+l,k+m,j+n)){
+							if(existeCasilla(i+l,k+m,j+n)){
 								Casillero* casilleroVecino = getCasilla(i+l,k+m,j+n);
 								casillero->asignarVecino(l+1,m+1,n+1, casilleroVecino);
 							}
@@ -73,6 +73,7 @@ Tablero::~Tablero(){
 	delete capa;
 
 }
+
 int Tablero::getAltura(){
 	return this->altura;
 }
@@ -97,42 +98,42 @@ bool Tablero::existeCasilla(int profundidad,int fila, int columna){
 	return(profundidadValida(profundidad) && alturaValida(fila) && anchoValido(columna));
 }
 
-bool Tablero::hayTateti(Casillero* casilleroAChequear){
-	int longitudesAdyacentes[3][3][3];
-	int sumaLongitudes[13];
+bool Tablero::hayTateti(Casillero* casilleroAChequear, int cantidadDeFichasParaGanar){
+    int longitudesAdyacentes[3][3][3];
+    int sumaLongitudes[13];
 
-	for(int i=0; i<3; i++){
-		for(int j=0; j<3; j++){
-			for(int k=0; k<3; k++){
-				if(i == 1 && j == 1 && k == 1){
-					longitudesAdyacentes[i][j][k] = 1;
-				}
-				else{
-					longitudesAdyacentes[i][j][k] = casilleroAChequear->getLongitud(i,j,k);
-				}
-			}
-		}
-	}
-	sumaLongitudes[0] = longitudesAdyacentes[0][0][0] + longitudesAdyacentes[2][2][2];
-	sumaLongitudes[1] = longitudesAdyacentes[0][0][1] + longitudesAdyacentes[2][2][1];
-	sumaLongitudes[2] = longitudesAdyacentes[0][0][2] + longitudesAdyacentes[2][2][0];
-	sumaLongitudes[3] = longitudesAdyacentes[0][1][0] + longitudesAdyacentes[2][1][2];
-	sumaLongitudes[4] = longitudesAdyacentes[0][1][1] + longitudesAdyacentes[2][1][1];
-	sumaLongitudes[5] = longitudesAdyacentes[0][1][2] + longitudesAdyacentes[2][1][0];
-	sumaLongitudes[6] = longitudesAdyacentes[0][2][0] + longitudesAdyacentes[2][0][2];
-	sumaLongitudes[7] = longitudesAdyacentes[0][2][1] + longitudesAdyacentes[2][0][1];
-	sumaLongitudes[8] = longitudesAdyacentes[0][2][2] + longitudesAdyacentes[2][0][0];
-	sumaLongitudes[9] = longitudesAdyacentes[1][0][0] + longitudesAdyacentes[1][2][2];
-	sumaLongitudes[10] = longitudesAdyacentes[1][0][1] + longitudesAdyacentes[1][2][1];
-	sumaLongitudes[11] = longitudesAdyacentes[1][0][2] + longitudesAdyacentes[1][2][0];
-	sumaLongitudes[12] = longitudesAdyacentes[1][1][1] + longitudesAdyacentes[1][1][2];
+    for(int i=0; i<3; i++){
+        for(int j=0; j<3; j++){
+            for(int k=0; k<3; k++){
+                if(i == 1 && j == 1 && k == 1){
+                    longitudesAdyacentes[i][j][k] = 1;
+                }
+                else{
+                    longitudesAdyacentes[i][j][k] = casilleroAChequear->getLongitud(i,j,k);
+                }
+            }
+        }
+    }
+    sumaLongitudes[0] = longitudesAdyacentes[0][0][0] + longitudesAdyacentes[2][2][2];
+    sumaLongitudes[1] = longitudesAdyacentes[0][0][1] + longitudesAdyacentes[2][2][1];
+    sumaLongitudes[2] = longitudesAdyacentes[0][0][2] + longitudesAdyacentes[2][2][0];
+    sumaLongitudes[3] = longitudesAdyacentes[0][1][0] + longitudesAdyacentes[2][1][2];
+    sumaLongitudes[4] = longitudesAdyacentes[0][1][1] + longitudesAdyacentes[2][0][1];
+    sumaLongitudes[5] = longitudesAdyacentes[0][1][2] + longitudesAdyacentes[2][1][0];
+    sumaLongitudes[6] = longitudesAdyacentes[0][2][0] + longitudesAdyacentes[2][0][2];
+    sumaLongitudes[7] = longitudesAdyacentes[0][2][1] + longitudesAdyacentes[2][0][1];
+    sumaLongitudes[8] = longitudesAdyacentes[0][2][2] + longitudesAdyacentes[2][0][0];
+    sumaLongitudes[9] = longitudesAdyacentes[1][0][0] + longitudesAdyacentes[1][2][2];
+    sumaLongitudes[10] = longitudesAdyacentes[1][0][1] + longitudesAdyacentes[1][2][1];
+    sumaLongitudes[11] = longitudesAdyacentes[1][0][2] + longitudesAdyacentes[1][2][0];
+    sumaLongitudes[12] = longitudesAdyacentes[1][1][0] + longitudesAdyacentes[1][1][2];
 
-	for(int i=0; i<13; i++){
-		if(sumaLongitudes[i] + 1 == 3){
-			return true;
-		}
-	}
-	return false;
+    for(int i=0; i<13; i++){
+        if(sumaLongitudes[i] + 1 == cantidadDeFichasParaGanar){
+            return true;
+        }
+    }
+    return false;
 }
 
 bool Tablero::casilleroEstaVacio(int profundidad, int fila, int columna){
@@ -142,6 +143,16 @@ bool Tablero::casilleroEstaVacio(int profundidad, int fila, int columna){
 	else{
 		return false;
 	}
+}
+
+bool Tablero::casilleroEstaDisponible(int profundidad, int fila, int columna){
+	Casillero *casilleroSolicitado = this->getCasilla(profundidad, fila, columna);
+
+	if(casilleroSolicitado->estaDisponible()){
+		return true;
+	}
+
+	return false;
 }
 
 void Tablero::mostrarTableroPorCapas(){
@@ -164,4 +175,40 @@ void Tablero::mostrarTableroPorCapas(){
 	}
 }
 
+void Tablero::generarBitMap(std::string nombreDelArchivo){
+	BMP imagenTablero;
+	RGBApixel negro;
 
+	negro.Red = 0, negro.Blue = 0, negro.Green = 0;
+
+	int fontHeight = 40;
+
+	int alturaImagen = profundidad*(altura*fontHeight) + fontHeight;
+	int anchoImagen = (int)(0.6 * (fontHeight) * (ancho)) + fontHeight;
+
+	imagenTablero.SetSize(anchoImagen, alturaImagen);
+
+	char texto[256] = "";
+
+	int altura = 0;
+
+	for(int i=1; i <= this->profundidad; i++){
+
+		for(int j=1; j <= this->ancho; j++){
+			int contador = 0;
+			for(int k=1; k <= this->altura; k++){
+				texto[contador++] = this->getCasilla(i, j, k)->mostrarFicha();
+
+				if(k != this->altura){
+					texto[contador++] = '|';
+				}
+			}
+			PrintString(imagenTablero, texto, 0, altura, fontHeight, negro);
+			altura += fontHeight;
+		}
+		altura += 10;
+	}
+
+
+	imagenTablero.WriteToFile(nombreDelArchivo.c_str());
+}

@@ -9,19 +9,17 @@ Casillero::Casillero(){
 }
 
 Casillero::~Casillero(){
-	// borra los ppunteros a casilleros de vecinos y casillerosVecinos
+	// borra los punteros a casilleros de vecinos
 	for(int i = 0; i<3; i++){
 		for(int j = 0 ; j<3; j++){
+			// en este bloque borra el puntero a casillero de la matriz 2 X 2 de vecinos
 			if(this->vecinos[i][j] != NULL){
 					delete this->vecinos[i][j];
 				}
-		}
-	}
-	for(int a = 0; a<3; a++){
-		for(int b = 0 ; b<3; b++){
-			for (int c=0; c<3; c++){
-				if(this->casillerosVecinos[a][b][c] != NULL){
-					delete this->casillerosVecinos[a][b][c];
+				for (int k = 0; k <3; k++){
+					// en este bloque borra el puntero a casillero de la matriz 3 X 3 de vecinos
+					if(this->casillerosVecinos[i][j][k] != NULL){
+						delete this->casillerosVecinos[i][j][k];
 				}
 			}
 		}
@@ -96,6 +94,14 @@ bool Casillero::tieneAdyacente(int profundidad, int fila, int columna){
 
 bool Casillero::estaOcupado(){
 	return (this != NULL);
+}
+
+bool Casillero::estaDisponible(){
+	if(this->estado == HABILITADO){
+		return true;
+	}
+
+	return false;
 }
 
 bool Casillero::tienenLaMismaFicha(Casillero* otroCasillero){

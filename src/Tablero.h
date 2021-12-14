@@ -30,6 +30,7 @@ public:
 	bool casilleroEstaVacio(int profundidad, int fila, int columna);
 	void generarBitMap(std::string nombreDelArchivo);
 	void mostrarTableroPorCapas();
+	bool casilleroEstaDisponible(int profundidad, int fila, int columna);
 };
 
 
