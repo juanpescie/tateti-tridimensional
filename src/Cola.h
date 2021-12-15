@@ -62,8 +62,7 @@ void Cola<T>::desacolar(){
 template <class T>
 T Cola<T>::front(){
 	if(this->cola == NULL){
-		std::cout<<"Cola vacia"<<std::endl;
-		throw "Cola vacia";
+		return NULL;
 	}
 
 	else{

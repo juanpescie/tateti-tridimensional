@@ -31,6 +31,7 @@ public:
 	void generarBitMap(std::string nombreDelArchivo);
 	void mostrarTableroPorCapas();
 	bool casilleroEstaDisponible(int profundidad, int fila, int columna);
+	~Tablero();
 };
 
 

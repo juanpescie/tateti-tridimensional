@@ -259,7 +259,35 @@ TATETI::TATETI(){
 	    this->cartasJugadores = new Cola<Lista<Carta*>*>;
 
 }
-
+// int cantidadDeFichasPorJugador;
+// 	Tablero *tablero;
+// 	int cantidadDeJugadores;
+// 	Cola<Jugador*> *jugadores;
+// 	std::string nombreDelArchivoBMP;
+// 	Cola<Carta*> *cartas;
+// 	Cola<Lista<Carta*>*> *cartasJugadores;
+TATETI::~TATETI(){
+	delete this->tablero;
+	// vamos borrando los punteros a jugador de las colas jugadores y desencola todos los nodos de la cola 
+	while(this->jugadores->front() != NULL){
+		delete this->jugadores->front();
+		this->jugadores->desacolar();
+	}
+	// borramos todos los punteros a carta y desacolamos los nodos de la cola de cartas 
+	while(this->cartas->front() != NULL){
+		delete this->cartas->front();
+		this->cartas->desacolar();
+	}
+	// borramos los punteros a a cartas y las listas de cartas que hay dentor de la cola cartasJugadores
+	while(this->cartasJugadores->front() != NULL){
+		Lista<Carta*>* listaCartas = this->cartasJugadores->front();
+		listaCartas->reiniciarCursor();
+		while(listaCartas->avanzarCursor()){
+			delete listaCartas->getCursor();
+		}
+		delete listaCartas;
+	}
+}
 int TATETI::getCantidadDeFichasPorJugador(){
 	return this->cantidadDeFichasPorJugador;
 }
