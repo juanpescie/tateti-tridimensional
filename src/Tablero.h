@@ -41,13 +41,18 @@ public:
 	// devuelve true si los parametros coinciden con una direccion del tablero
 	bool existeCasilla(int profundidad,int fila, int columna);
 	// pre: el puntero a casillero no debe ser nulo
-	// post: devuelve true si se formo tateti con la canatidad de fichas que se le pasa por parametro, 
+	// post: devuelve true si se formo tateti con la canatidad de fichas que se le pasa por parametro(fichasaraGanar),
+	// el tablero tiene que tener en linea recta con el mismo caracter del casilleroAChequear
 	// false en el caso contrario
 	bool hayTateti(Casillero* casilleroAChequear, int cantidadDeFichasParaGanar);
 	// pre: dimensiones validas
 	// devuelve true si el casillero que se encuentra en esa posicion tiene un caracter distinto al espacio
 	bool casilleroEstaVacio(int profundidad, int fila, int columna);
+	// pre: nombre string no vacio 
+	// post: genera un archivo bitmap con las proyecciones de las capas del tablero 
 	void generarBitMap(std::string nombreDelArchivo);
+	// pre: ninguna
+	// post: muestra por consola los planos XY del tablero recorriendo la profunidad
 	void mostrarTableroPorCapas();
 	// pre: dimensiones validas
 	// post: devuelve true si el casillero esta habilitado para ser usado
