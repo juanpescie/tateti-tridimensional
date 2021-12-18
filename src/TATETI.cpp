@@ -7,7 +7,7 @@
 using namespace std;
 #define STRING(num) #num
 
-string Cartas_descripcion[6]{
+string cartasDescripcion[6]{
 	"Hacer perder turno a un jugador",
 	"Bloquear una ficha de otro jugador",
 	"Anular casillero",
@@ -15,11 +15,11 @@ string Cartas_descripcion[6]{
 	"Mover ficha",
 	" ",
 };
-
+const int CARTAS_MAXIMAS_POR_JUGADOR = 3;
 
 Carta::Carta(int numero){
 	this->numero = numero;
-	this->descripcion = Cartas_descripcion[numero % 6];
+	this->descripcion = cartasDescripcion[numero % 6];
 }
 
 string Carta::obtenerDescripcion(){
@@ -246,6 +246,8 @@ void Carta::utilizarCarta(Tablero *tablero, Cola<Jugador*> *jugadores){
 TATETI::TATETI(){
 	    this->cantidadDeJugadores = 0;
 
+		this->cantidadMaximaCartasPorJugador = CARTAS_MAXIMAS_POR_JUGADOR ;
+
 	    this->tablero = NULL;
 
 	    this->jugadores = new Cola<Jugador*>;
@@ -259,13 +261,7 @@ TATETI::TATETI(){
 	    this->cartasJugadores = new Cola<Lista<Carta*>*>;
 
 }
-// int cantidadDeFichasPorJugador;
-// 	Tablero *tablero;
-// 	int cantidadDeJugadores;
-// 	Cola<Jugador*> *jugadores;
-// 	std::string nombreDelArchivoBMP;
-// 	Cola<Carta*> *cartas;
-// 	Cola<Lista<Carta*>*> *cartasJugadores;
+
 TATETI::~TATETI(){
 	delete this->tablero;
 	// vamos borrando los punteros a jugador de las colas jugadores y desencola todos los nodos de la cola 
@@ -430,22 +426,24 @@ void TATETI::inicializarJugadores(){
 }
 
 void TATETI::pedirNombreDelArchivoBMP(){
-	cout<<"Ingrese el nombre del archivo BMP o la ruta donde desea guardar los archivos BMP: ";
+	cout<<"Ingrese el nombre del archivo BMP o la ruta donde desea guardar los archivos BMP(no agregar extension): ";
 	cin>>this->nombreDelArchivoBMP;
 }
 
 void TATETI::crearCartas(){
-	int numeroDeCarta = 1;
+	int contadorCartasEmitidas = 1;
 
-	while(numeroDeCarta <= this->cantidadDeJugadores * 3){
-		this->cartas->acolar(new Carta(numeroDeCarta++));
+	while(contadorCartasEmitidas <= this->cantidadDeJugadores * 2){
+		// se agrega una instancia de carta con un numero en el rango de cartas disponibles 
+		this->cartas->acolar(new Carta(rand() % 6));
+		contadorCartasEmitidas++;
 	}
 }
 
 void TATETI::repartirCartas(){
 	Lista<Carta*> *cartasJugadorActual = this->cartasJugadores->front();
 
-	if(cartasJugadorActual->contarElementos() < 3){
+	if(cartasJugadorActual->contarElementos() < this->cantidadMaximaCartasPorJugador){
 		Carta *carta = this->cartas->front();
 		cartasJugadorActual->add(carta);
 		this->cartas->desacolar();

@@ -14,7 +14,7 @@ bool Tablero::anchoValido(int ancho){
 	return (ancho >= 1 && ancho <= this->getAncho());
 }
 
-Tablero::Tablero(int Profundidad, int cantidadFilas, int cantidadColumnas){
+Tablero::Tablero(unsigned int Profundidad, unsigned int cantidadFilas, unsigned int cantidadColumnas){
 	this->profundidad = Profundidad;
 	this->altura = cantidadFilas;
 	this->ancho = cantidadColumnas;
