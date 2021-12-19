@@ -263,8 +263,8 @@ void Carta::interCambiarFichasDeLugar(Tablero *tablero, Cola<Jugador*> *jugadore
 					validarCoordenadas(tablero, columna2, fila2, profundidad2)){
 						// guardamos lso dos caracteres en variables para no pererlos una vez que intercambiamos
 						// las fichas 
-						char caracterCasillero1 = getCasilla(profundidad1, fila1, columna1)->mostrarFicha();
-						char caracterCasillero2 = getCasilla(profundidad2, fila2, columna2)->mostrarFicha();
+						char caracterCasillero1 = tablero->getCasilla(profundidad1, fila1, columna1)->mostrarFicha();
+						char caracterCasillero2 = tablero->getCasilla(profundidad2, fila2, columna2)->mostrarFicha();
 
 						tablero->setCasilla(profundidad1, fila1, columna1, caracterCasillero2);
 						tablero->setCasilla(profundidad2, fila2, columna2, caracterCasillero1);
@@ -451,11 +451,7 @@ void TATETI::pedirDimensionesDelTablero(){
     this->cantidadDeFichasPorJugador = cantFichasPorJugador;
     this->tablero = new Tablero(profundidad, numeroDeFilas, numeroDeColumnas);
 }
-int TATETI::getCantidadDeFichasPorJugador(){
-	return this->cantidadDeFichasPorJugador;
-}
-	// pre: ninguna
-	// post: devuelve la cantidad limite de cartas que puede teener en su cola de cartas 
+
 int TATETI::getCantidadMaximaCartasPorJugador(){
 	return this->cantidadMaximaCartasPorJugador;
 }

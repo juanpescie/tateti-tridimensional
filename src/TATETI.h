@@ -84,9 +84,6 @@ private:
 	// post el atributo nombreArchivoBMP va a tener string que el usuario escribio por consola
 	void pedirNombreDelArchivoBMP();
 	// pre: ninguna
-	// post: devuelve la cantidad de fichas por jugador 
-	int getCantidadDeFichasPorJugador();
-	// pre: ninguna
 	// post: agrega a la cola de cartas la cantidad de cartas correspondientes a la cantidad de jugadores
 	void crearCartas();
 	// pre: numero enteros 
