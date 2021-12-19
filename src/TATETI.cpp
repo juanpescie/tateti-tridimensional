@@ -711,10 +711,13 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 		char ficha = this->jugadores->front()->obtenerFicha();
 
 		cout<<"\nIngrese la direccion a la que quiere mover la ficha: "<<endl;
-		cout<<"[W/w]:arriba, [A/a]:izquierda, [S/s]: abajo, [D/d]: derecha, [F/f]: al frente, [B/b]: atras"<<endl;
+		cout<<"[W/w]:arriba, [A/a]:izquierda, [S/s]: abajo, [D/d]: derecha, [F/f]: al frente, [B/b]: atras, y [P/p]: pasar:  "<<endl;
 		cin>>entrada;
 
 		switch(entrada){
+		case 'P':case 'p':
+			return false;
+			
 		case 'W':case 'w':
 			if(fila-1 != 0){
 				if(tablero->casilleroEstaVacio(profundidad, fila-1, columna)
@@ -879,7 +882,7 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 
 void TATETI::moverFichas(){
 	bool finalizoLaPartida = false;
-
+	int cantidadMovimientos = 0;
 	int contador = this->cantidadDeFichasPorJugador * this->cantidadDeJugadores;
 	while(!finalizoLaPartida){
 		string cadenaColumna, cadenaFila, cadenaProfundidad;
@@ -951,6 +954,8 @@ void TATETI::moverFichas(){
 		else{
 			cout<<"No se ha ingresado un numero valido"<<endl;
 		}
+		cantidadMovimientos++;
+		cout<<"MOVIMIENTOS: "<<cantidadMovimientos<<endl;
 	}
 }
 

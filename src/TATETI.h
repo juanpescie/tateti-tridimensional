@@ -61,7 +61,7 @@ public:
 	// el nombre del archivo bmp donde se vna a guardar los tableros
 	void iniciarJuego();
 	// pre: ninguna
-	// post: juega la partida un turno y dibuja el tablero
+	// post: juega la partida y dibuja el tablero hasta que se termine
 	void jugarPartida();
 	// pre: ninguna
 	// post: muestra la cantidad de partidas ganadas de cada jugador por consola 
