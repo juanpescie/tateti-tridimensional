@@ -13,7 +13,7 @@ string cartasDescripcion[6]{
 	"Anular casillero",
 	"Volver atras una jugada",
 	"Mover ficha",
-	" ",
+	"Intercambiar dos fichas",
 };
 const int CARTAS_MAXIMAS_POR_JUGADOR = 3;
 
@@ -219,6 +219,70 @@ void Carta::moverFicha(Tablero *tablero, Cola<Jugador*> *jugadores){
 	}
 }
 
+void Carta::interCambiarFichasDeLugar(Tablero *tablero, Cola<Jugador*> *jugadores){
+	bool listo = false;
+
+	while(!listo){
+		string cadenaColumna1, cadenaFila1, cadenaProfundidad1;
+		string cadenaColumna2, cadenaFila2, cadenaProfundidad2;
+
+		cout<<"Ingrese las coordenadas del primer casillero con que desea intercambiar: "<<endl;
+		cout<<"Columna: ";
+		cin>>cadenaColumna1;
+
+		cout<<"Fila: ";
+		cin>>cadenaFila1;
+
+		cout<<"Profundidad: ";
+		cin>>cadenaProfundidad1;
+
+		cout<<"Ingrese las coordenadas del segundo casillero que desea intercambiar: "<<endl;
+
+		cout<<"Columna: ";
+		cin>>cadenaColumna2;
+
+		cout<<"Fila: ";
+		cin>>cadenaFila2;
+
+		cout<<"Profundidad: ";
+		cin>>cadenaProfundidad2;
+
+		if(esUnNumero(cadenaColumna1) && esUnNumero(cadenaFila1) && esUnNumero(cadenaProfundidad1) &&
+				esUnNumero(cadenaColumna2) && esUnNumero(cadenaFila2) && esUnNumero(cadenaProfundidad2)){
+
+			int columna1 = atoi(cadenaColumna1.c_str());
+			int fila1 = atoi(cadenaFila1.c_str());
+			int profundidad1 = atoi(cadenaProfundidad1.c_str());
+
+			int columna2 = atoi(cadenaColumna2.c_str());
+			int fila2 = atoi(cadenaFila2.c_str());
+			int profundidad2 = atoi(cadenaProfundidad2.c_str());
+
+
+			if(validarCoordenadas(tablero, columna1, fila1, profundidad1) &&
+					validarCoordenadas(tablero, columna2, fila2, profundidad2)){
+						// guardamos lso dos caracteres en variables para no pererlos una vez que intercambiamos
+						// las fichas 
+						char caracterCasillero1 = getCasilla(profundidad1, fila1, columna1)->mostrarFicha();
+						char caracterCasillero2 = getCasilla(profundidad2, fila2, columna2)->mostrarFicha();
+
+						tablero->setCasilla(profundidad1, fila1, columna1, caracterCasillero2);
+						tablero->setCasilla(profundidad2, fila2, columna2, caracterCasillero1);
+						listo = true;
+			}
+
+			else{
+				cout<<"Coordenadas invalidas"<<endl;
+			}
+		}
+
+		else{
+			cout<<"No se han ingresado un numeros validos"<<endl;
+		}
+	}
+}
+
+
 void Carta::utilizarCarta(Tablero *tablero, Cola<Jugador*> *jugadores){
 	switch(this->numero % 6){
 	case 0:
@@ -236,7 +300,9 @@ void Carta::utilizarCarta(Tablero *tablero, Cola<Jugador*> *jugadores){
 	case 3:
 		this->moverFicha(tablero, jugadores);
 		break;
-
+	case 5: 
+		this->interCambiarFichasDeLugar(tablero, jugadores);
+		break;
 	default:
 		cout<<"Se utilizo la carta"<<endl<<endl;
 		break;
@@ -384,6 +450,14 @@ void TATETI::pedirDimensionesDelTablero(){
 
     this->cantidadDeFichasPorJugador = cantFichasPorJugador;
     this->tablero = new Tablero(profundidad, numeroDeFilas, numeroDeColumnas);
+}
+int TATETI::getCantidadDeFichasPorJugador(){
+	return this->cantidadDeFichasPorJugador;
+}
+	// pre: ninguna
+	// post: devuelve la cantidad limite de cartas que puede teener en su cola de cartas 
+int TATETI::getCantidadMaximaCartasPorJugador(){
+	return this->cantidadMaximaCartasPorJugador;
 }
 
 void TATETI::inicializarJugadores(){

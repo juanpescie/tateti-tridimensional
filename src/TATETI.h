@@ -27,6 +27,7 @@ private:
 	void bloquearFicha(Tablero *tablero, Cola<Jugador*> *jugadores);
 	void anularCasillero(Tablero *tablero, Cola<Jugador*> *jugadores);
 	void moverFicha(Tablero *tablero, Cola<Jugador*> *jugadores);
+	void interCambiarFichasDeLugar(Tablero *tablero, Cola<Jugador*> *jugadores);
 };
 
 class TATETI{
@@ -44,6 +45,12 @@ public:
 	// pre: ninguna
 	// post: devuelve una instancia del juego TATETI, con un tablero nulo, y sin dimensiones, louego se le pide 
 	TATETI();
+	// pre: ninguna
+	// post: devuelve la cantidad de fichas debe tener un jugador en el tablero luego de insertar todas sus fichas
+	int getCantidadDeFichasPorJugador();
+	// pre: ninguna
+	// post: devuelve la cantidad limite de cartas que puede teener en su cola de cartas 
+	int getCantidadMaximaCartasPorJugador();
 	void insertarFicha(int alto, int ancho, int profundidad);
 	// pre: ninguna
 	// post: llama al metodo del tablero mostrarTableroPorCapas y muestra por pantalla las capas
