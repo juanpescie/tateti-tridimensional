@@ -971,10 +971,11 @@ void TATETI::moverFichas(){
 			int fila = atoi(cadenaFila.c_str());
 			int profundidad = atoi(cadenaProfundidad.c_str());
 
-			if(this->validarCoordenadas(columna, fila, profundidad)){
+			if(this->validarCoordenadas(columna, fila, profundidad) ){
 
 				char ficha = jugadorActual->obtenerFicha();
-				if(tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() == ficha){
+				if((tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() == ficha) && 
+					(tablero->getCasilla(profundidad, fila, columna)->estaDisponible()) ){
 					if(this->pedirDireccionAMover(columna, fila, profundidad)){
 						cout<<jugadorActual->obtenerNombre()<<" gano la partida"<<endl;
 						jugadorActual->ganoLaPartida();
@@ -1002,7 +1003,7 @@ void TATETI::moverFichas(){
 				}
 
 				else{
-					cout<<"La ficha indicada no pertenece a "<<jugadorActual->obtenerNombre()<<endl;
+					cout<<"La ficha indicada no pertenece a "<<jugadorActual->obtenerNombre()<<"o esta bloqueado"<<endl;
 				}
 			}
 
