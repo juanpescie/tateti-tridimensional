@@ -6,6 +6,7 @@
 #include "Tablero.h"
 #include "Jugador.h"
 
+class Turnos;
 class Carta{
 private:
 	int numero;
@@ -20,14 +21,25 @@ public:
 	std::string obtenerDescripcion();
 	// pre: recibe el tablero para aplicar la carta, y la cola de jugadores en caso de que la carta aplique a un jugador
 	// post: dependiendo de la carta, aplica su funcionalidad en el juego
-	void utilizarCarta(Tablero *tablero, Cola<Jugador*> *jugadores);
+	void utilizarCarta(Tablero *tablero, Cola<Turnos*> *turnos);
 
 private:
-	void jugadorPierdeUnTurno(Tablero *tablero, Cola<Jugador*> *jugadores);
-	void bloquearFicha(Tablero *tablero, Cola<Jugador*> *jugadores);
-	void anularCasillero(Tablero *tablero, Cola<Jugador*> *jugadores);
-	void moverFicha(Tablero *tablero, Cola<Jugador*> *jugadores);
-	void interCambiarFichasDeLugar(Tablero *tablero, Cola<Jugador*> *jugadores);
+	void jugadorPierdeUnTurno(Tablero *tablero, Cola<Turnos*> *turnos);
+	void bloquearFicha(Tablero *tablero, Cola<Turnos*> *turnos);
+	void anularCasillero(Tablero *tablero, Cola<Turnos*> *turnos);
+	void moverFicha(Tablero *tablero, Cola<Turnos*> *turnos);
+	void volverAtrasUnTurno(Tablero *tablero, Cola<Turnos*> *turnos);
+	void intercambiarFichasDeLugar(Tablero *tablero, Cola<Turnos*> *turnos);
+};
+class Turnos{
+private:
+	Jugador *jugador;
+	Lista<Carta*> *cartasDelJugador;
+
+public:
+	Turnos(Jugador *jugador, Lista<Carta*> *cartasDelJugador);
+	Jugador *getJugador();
+	Lista<Carta*> *getCartasDelJugador();
 };
 
 class TATETI{
@@ -36,10 +48,9 @@ private:
 	int cantidadMaximaCartasPorJugador;
 	Tablero *tablero;
 	int cantidadDeJugadores;
-	Cola<Jugador*> *jugadores;
 	std::string nombreDelArchivoBMP;
 	Cola<Carta*> *cartas;
-	Cola<Lista<Carta*>*> *cartasJugadores;
+	Cola<Turnos*> *turnos;
 
 public:
 	// pre: ninguna
@@ -107,7 +118,7 @@ private:
 	// pre: puntero a carta no nulo
 	// post: le pregunta al usuario si desea usar una de las cartas que tiene en la cola
 	// si el usuario dice que quiere usar una, se desacola la carta que quiere usar y devuelve true, si no la usa devuevle false 
-	bool utilizarCarta(Lista<Carta*> *cartas);
+	void utilizarCarta();
 
 	//funciones de prueba
 	// pre: lista de puntero a cartas

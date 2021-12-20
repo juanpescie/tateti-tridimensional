@@ -17,6 +17,9 @@ private:
 	bool profundidadValida(int profundidad);
 	bool alturaValida(int altura);
 	bool anchoValido(int ancho);
+	int ultimaPosicionX;
+	int ultimaPosicionY;
+	int ultimaPosicionZ;
 
 public:
 	// pre: numeros positivos en todos los parametros
@@ -37,6 +40,19 @@ public:
 	// pre: numeros positivos menores que la cantidad de capas, filas y columnas respectivamente
 	// post: el casillero de esa posicion va a tener en su atributo ficha el caracter que se le pasa por parametro
 	void setCasilla(int profundidad,int fila, int columna, char ficha);
+	// pre: numeros enteros dentro del rango del tablero 
+	// post: los atributos ultimaPosicionZ, ultimaPosicionY y ultimaPosicionX 
+	// quedan con los valores que se le pasan por parametro respectivamente
+	void setUltimaPosicion(int profundidad, int fila, int columna);
+	// pre: ninguna
+	// post: devuelve el atributo ultimaPosicionZ
+	int getUltimaProfundidad();
+	// pre: ninguna
+	// post: devuelve el atributo ultimaPosicionX
+	int getUltimaColumna();
+	// pre: ninguna
+	// post: devuelve el atributo ultimaPosicionY
+	int getUltimaFila();	
 	// pre: ninguna
 	// devuelve true si los parametros coinciden con una direccion del tablero
 	bool existeCasilla(int profundidad,int fila, int columna);

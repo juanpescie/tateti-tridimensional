@@ -19,6 +19,9 @@ Tablero::Tablero(unsigned int Profundidad, unsigned int cantidadFilas, unsigned 
 	this->altura = cantidadFilas;
 	this->ancho = cantidadColumnas;
 	this->casilleros = new Lista<Lista<Lista<Casillero*>*>*>();
+	this->ultimaPosicionX = 0;
+	this->ultimaPosicionY = 0;
+	this->ultimaPosicionZ = 0;
 
 	for(int i=0; i<Profundidad; i++){
 		Lista<Lista<Casillero*>*>* capa = new Lista<Lista<Casillero*>*>();
@@ -84,6 +87,21 @@ int Tablero::getAncho(){
 
 int Tablero::getProfundidad(){
 	return this->profundidad;
+}
+void Tablero::setUltimaPosicion(int profundidad, int fila, int columna){
+	this->ultimaPosicionX = columna, this->ultimaPosicionY = fila, this->ultimaPosicionZ = profundidad;
+}
+
+int Tablero::getUltimaProfundidad(){
+	return this->ultimaPosicionZ;
+}
+
+int Tablero::getUltimaColumna(){
+	return this->ultimaPosicionX;
+}
+
+int Tablero::getUltimaFila(){
+	return this->ultimaPosicionY;
 }
 
 Casillero* Tablero::getCasilla(int profundidad, int fila, int columna){

@@ -9,9 +9,30 @@ int main(){
 
 	tateti->iniciarJuego();
 
-	tateti->jugarPartida();
+	bool finalizarJuego = false;
 
-	tateti->mostrarScore();
+	while(!finalizarJuego){
+		cout<<"\n[J/j]: iniciar partida"<<endl;
+		cout<<"[M/m]: mostrar marcador"<<endl;
+		cout<<"[S/s]: salir"<<endl;
+
+		char opcion;
+		cin>>opcion;
+
+		switch(opcion){
+		case 'J':case 'j':
+			tateti->jugarPartida();
+			break;
+
+		case 'M':case 'm':
+			tateti->mostrarScore();
+			break;
+
+		case 'S':case 's':
+			finalizarJuego = true;
+			break;
+		}
+	}
 
 	return 0;
 }
