@@ -127,4 +127,3 @@ int Casillero::getLongitud(int profundidad, int fila, int columna){
 	}
 	return 0;
 }
-

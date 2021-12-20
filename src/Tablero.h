@@ -4,7 +4,7 @@
 #include "Casillero.h"
 #include "Lista.h"
 #include "EasyBMP.h"
-#include "EasyBMP_font.h"
+#include "EasyBMP_Font.h"
 
 class Tablero{
 private:
@@ -40,8 +40,8 @@ public:
 	// pre: numeros positivos menores que la cantidad de capas, filas y columnas respectivamente
 	// post: el casillero de esa posicion va a tener en su atributo ficha el caracter que se le pasa por parametro
 	void setCasilla(int profundidad,int fila, int columna, char ficha);
-	// pre: numeros enteros dentro del rango del tablero 
-	// post: los atributos ultimaPosicionZ, ultimaPosicionY y ultimaPosicionX 
+	// pre: numeros enteros dentro del rango del tablero
+	// post: los atributos ultimaPosicionZ, ultimaPosicionY y ultimaPosicionX
 	// quedan con los valores que se le pasan por parametro respectivamente
 	void setUltimaPosicion(int profundidad, int fila, int columna);
 	// pre: ninguna
@@ -52,7 +52,7 @@ public:
 	int getUltimaColumna();
 	// pre: ninguna
 	// post: devuelve el atributo ultimaPosicionY
-	int getUltimaFila();	
+	int getUltimaFila();
 	// pre: ninguna
 	// devuelve true si los parametros coinciden con una direccion del tablero
 	bool existeCasilla(int profundidad,int fila, int columna);
@@ -64,8 +64,8 @@ public:
 	// pre: dimensiones validas
 	// devuelve true si el casillero que se encuentra en esa posicion tiene un caracter distinto al espacio
 	bool casilleroEstaVacio(int profundidad, int fila, int columna);
-	// pre: nombre string no vacio 
-	// post: genera un archivo bitmap con las proyecciones de las capas del tablero 
+	// pre: nombre string no vacio
+	// post: genera un archivo bitmap con las proyecciones de las capas del tablero
 	void generarBitMap(std::string nombreDelArchivo);
 	// pre: ninguna
 	// post: muestra por consola los planos XY del tablero recorriendo la profunidad
@@ -73,6 +73,10 @@ public:
 	// pre: dimensiones validas
 	// post: devuelve true si el casillero esta habilitado para ser usado
 	bool casilleroEstaDisponible(int profundidad, int fila, int columna);
+	// pre: ninguna
+	// post: el tablero tendra en todoas sus fichas caracteres vacios
+	void reiniciar();
+
 	~Tablero();
 };
 

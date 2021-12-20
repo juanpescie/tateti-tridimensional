@@ -19,7 +19,7 @@ public:
 	Casillero();
 	~Casillero();
 	// pre: caracter
-	// post: la ficha del casillero es la que se asigno con parametro 
+	// post: la ficha del casillero es la que se asigno con parametro
 	void setFicha(char ficha);
 	// pre: ninguna
 	// post: devuelve la ficha que contiene el casillero
@@ -28,10 +28,10 @@ public:
 	// post: devuelve el estado del casillero, si esta habilitado o esta bloqueado
 	Estado obtenerEstado();
 	// pre: ninguna
-	// post: el casillero queda habilitado para su uso 
+	// post: el casillero queda habilitado para su uso
 	void habilitar();
 	// pre: ninguna
-	// post: el casillero queda deshabilitado para su uso 
+	// post: el casillero queda deshabilitado para su uso
 	void deshabilitar();
 	// pre: ninguna
 	// post: el casillero queda bloqueado hasta que se desbloquee
@@ -40,25 +40,25 @@ public:
 	// post: el casillero tiene un nuevo valor en el atributo vecinos en la coordenada que se le pasa por parametros
 	void asignarVecino(int profundidad, int fila, int columna, Casillero* casillero);
 	// pre: ninguna
-	// post: muestra por consola por capas, los vecinos del casillero 
+	// post: muestra por consola por capas, los vecinos del casillero
 	void mostrarVecinos();
 	// pre: ninguna
 	// post: devuelve la cantidad de casillero seguidos con la misma ficha en linea
 	int getLongitud(int profundidad, int fila, int columna);
-	// pre: ninguna 
-	// post: devuelve el casillero que esta al lado en la posicion que se pasa por parametro 
+	// pre: ninguna
+	// post: devuelve el casillero que esta al lado en la posicion que se pasa por parametro
 	Casillero* getAdyacente(int profundidad, int fila, int columna);
 	// pre: ninguna
-	// post: devuelve true si su casillero vecino no es nulo, o false si lo es 
+	// post: devuelve true si su casillero vecino no es nulo, o false si lo es
 	bool tieneAdyacente(int profundidad, int fila, int columna);
 	// pre: ninguna
 	// post: devuelve true si el caracter que tiene el casillero no se el espacio " ", y true si tiene otro caracter
 	bool estaOcupado();
 	// pre: ninguna
-	// post: devuelve el carcater anterior 
+	// post: devuelve el carcater anterior
 	char mostrarFichaAnterior();
 	// pre: ninguna
-	// post: devuelve true si el casillero tiene como estado igual a HABILITADO, false si no lo esta 
+	// post: devuelve true si el casillero tiene como estado igual a HABILITADO, false si no lo esta
 	bool estaDisponible();
 	// pre: ninguna
 	// post: devuelve true si los dos casilleros tienen la misma ficha, false si son distitnas

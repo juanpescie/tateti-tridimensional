@@ -14,7 +14,7 @@ private:
 
 public:
 	// pre: numero positivo
-	// post: devuelve una instancia de carta dentro de las opciones 
+	// post: devuelve una instancia de carta dentro de las opciones
 	Carta(int numero);
 	// pre: ninguna
 	// post: devuelve un string con la funcionalidad describiendo que hace la carta
@@ -49,7 +49,6 @@ private:
 	int cantidadDeFichasPorJugador;
 	int cantidadMaximaCartasPorJugador;
 	Tablero *tablero;
-	Tablero *tableroAnterior;
 	int cantidadDeJugadores;
 	std::string nombreDelArchivoBMP;
 	Cola<Carta*> *cartas;
@@ -57,13 +56,13 @@ private:
 
 public:
 	// pre: ninguna
-	// post: devuelve una instancia del juego TATETI, con un tablero nulo, y sin dimensiones, louego se le pide 
+	// post: devuelve una instancia del juego TATETI, con un tablero nulo, y sin dimensiones, louego se le pide
 	TATETI();
 	// pre: ninguna
 	// post: devuelve la cantidad de fichas debe tener un jugador en el tablero luego de insertar todas sus fichas
 	int getCantidadDeFichasPorJugador();
 	// pre: ninguna
-	// post: devuelve la cantidad limite de cartas que puede teener en su cola de cartas 
+	// post: devuelve la cantidad limite de cartas que puede teener en su cola de cartas
 	int getCantidadMaximaCartasPorJugador();
 	void insertarFicha(int alto, int ancho, int profundidad);
 	// pre: ninguna
@@ -78,19 +77,19 @@ public:
 	// post: juega la partida y dibuja el tablero hasta que se termine
 	void jugarPartida();
 	// pre: ninguna
-	// post: muestra la cantidad de partidas ganadas de cada jugador por consola 
+	// post: muestra la cantidad de partidas ganadas de cada jugador por consola
 	void mostrarScore();
 	~TATETI();
 
 private:
-	// pre: ninguna 
-	// post: muestra el mensjae indicando la introduccion al juego 
+	// pre: ninguna
+	// post: muestra el mensjae indicando la introduccion al juego
 	void mostrarBienvenida();
 	// pre: ninguna
 	// post: se crea un tablero con las dimensiones que se reicibieron por input
 	void pedirDimensionesDelTablero();
 	// pre: ninguna
-	// post: se realiza ua serie de inputs para fijar el numero de jugadores, y los nombres e identificadores en el tablero de cada jugador 
+	// post: se realiza ua serie de inputs para fijar el numero de jugadores, y los nombres e identificadores en el tablero de cada jugador
 	// los jugadores se vana agregando, y se empieza dandole una carta al azar a cada uno
 	// la cola jugadores contiene a todos los jugadores que si ingresaron
 	void inicializarJugadores();
@@ -100,32 +99,32 @@ private:
 	// pre: ninguna
 	// post: agrega a la cola de cartas la cantidad de cartas correspondientes a la cantidad de jugadores
 	void crearCartas();
-	// pre: numero enteros 
-	// post: devuelve true si en una coordenada dentro del tablero y flase si esta fuera de rango 
+	// pre: numero enteros
+	// post: devuelve true si en una coordenada dentro del tablero y flase si esta fuera de rango
 	bool validarCoordenadas(int columna, int fila, int profundidad);
 	// pre: 	ninguna
 	// post: 	maneja el turno, l pide al usuario una serie de valores para ubicar las fichas
-	// y devuelve si se termino el juego o no  
+	// y devuelve si se termino el juego o no
 	bool insertarFichas();
-	// pre: ninguna 
+	// pre: ninguna
 	// post: muta el estado del tablero con una serie de inputs que responde el usuario
-	// mueve la ficha de donde esta a un casillero 
+	// mueve la ficha de donde esta a un casillero
 	void moverFichas();
 	// pre: ninguna
-	// post: le pide al usuario por input la direccion a donde mover la ficha 
+	// post: le pide al usuario por input la direccion a donde mover la ficha
 	// y devuelve true si puede mover la ficha en esa direccion, y false si no la puede mover
-	bool pedirDireccionAMover(int columna, int fila, int profundidad);
+	void pedirDireccionAMover(int columna, int fila, int profundidad);
 	// pre: ninguna
-	// post: reparte cartas en la cola de cartas del jugador actual 
+	// post: reparte cartas en la cola de cartas del jugador actual
 	void repartirCartas();
 	// pre: puntero a carta no nulo
 	// post: le pregunta al usuario si desea usar una de las cartas que tiene en la cola
-	// si el usuario dice que quiere usar una, se desacola la carta que quiere usar y devuelve true, si no la usa devuevle false 
+	// si el usuario dice que quiere usar una, se desacola la carta que quiere usar y devuelve true, si no la usa devuevle false
 	void utilizarCarta();
 
 	//funciones de prueba
 	// pre: lista de puntero a cartas
-	// post: imprime la lista con todas las cartas 
+	// post: imprime la lista con todas las cartas
 	void mostrarCartas(Lista<Carta*> *cartas);
 };
 #endif /* TATETI_H_ */

@@ -23,11 +23,11 @@ Tablero::Tablero(unsigned int Profundidad, unsigned int cantidadFilas, unsigned 
 	this->ultimaColumna = -1;
 	this->ultimaProfundidad = -1;
 
-	for(int i=0; i<Profundidad; i++){
+	for(unsigned int i=0; i<Profundidad; i++){
 		Lista<Lista<Casillero*>*>* capa = new Lista<Lista<Casillero*>*>();
-		for(int j=0; j<cantidadColumnas; j++){
+		for(unsigned int j=0; j<cantidadColumnas; j++){
 			Lista<Casillero*>* columna = new Lista<Casillero*>();
-			for(int k=0; k<cantidadFilas; k++){
+			for(unsigned int k=0; k<cantidadFilas; k++){
 				Casillero* casillero = new Casillero();
 				columna->add(casillero);
 			}
@@ -36,9 +36,9 @@ Tablero::Tablero(unsigned int Profundidad, unsigned int cantidadFilas, unsigned 
 		this->casilleros->add(capa);
 	}
 
-	for(int i=1; i<=Profundidad; i++){
-		for(int j=1; j<=cantidadColumnas; j++){
-			for(int k=1; k<=cantidadFilas; k++){
+	for(unsigned int i=1; i<=Profundidad; i++){
+		for(unsigned int j=1; j<=cantidadColumnas; j++){
+			for(unsigned int k=1; k<=cantidadFilas; k++){
 				Casillero* casillero = getCasilla(i,k,j);
 				for(int l=-1; l<2; l++){
 					for(int m=-1; m<2; m++){
@@ -67,7 +67,7 @@ Tablero::~Tablero(){
 			Lista<Casillero*>* fila = columna->getCursor();
 			fila->reiniciarCursor();
 			while(fila->avanzarCursor()){
-				delete fila->getCursor(); //borra el puntero a casillero 
+				delete fila->getCursor(); //borra el puntero a casillero
 			}
 			delete fila;
 		}
@@ -230,4 +230,14 @@ void Tablero::generarBitMap(std::string nombreDelArchivo){
 
 
 	imagenTablero.WriteToFile(nombreDelArchivo.c_str());
+}
+
+void Tablero::reiniciar(){
+    for(int i=1; i<=this->profundidad; i++){
+        for(int j=1; j<=this->ancho; j++){
+            for(int k=1; k<=this->altura; k++){
+                this->setCasilla(i, k, j, ' ');
+            }
+        }
+    }
 }

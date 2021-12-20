@@ -62,8 +62,6 @@ void Carta::bloquearFicha(Tablero *tablero, Cola<Turnos*> *turnos){
 	string cadenaColumna, cadenaFila, cadenaProfundidad;
 	bool listo = false;
 
-	char fichaJugadorActual = turnos->front()->getJugador()->obtenerFicha();
-
 	while(!listo){
 		cout<<"Ingrese las coordenadas de la ficha que desea bloquear: ";
 
@@ -151,7 +149,7 @@ void Carta::anularCasillero(Tablero *tablero, Cola<Turnos*> *turnos){
 void Carta::volverAtrasUnTurno(Tablero *tablero, Cola<Turnos*> *turnos){
 	int ultimaColumna = tablero->getUltimaColumna();
 	int ultimaFila = tablero->getUltimaFila();
-	int ultimaProfundidad = tablero->getUltimaProfundidad(); 
+	int ultimaProfundidad = tablero->getUltimaProfundidad();
 	char ficha = turnos->front()->getJugador()->obtenerFicha();
 	if(validarCoordenadas(tablero, ultimaProfundidad-1, ultimaFila, ultimaColumna) &&
 			tablero->getCasilla(ultimaProfundidad-1, ultimaFila, ultimaColumna)->mostrarFichaAnterior() == ficha){
@@ -262,7 +260,7 @@ void Carta::desbloquearFicha(Tablero *tablero, Cola<Turnos*> *turnos){
 
 			if(validarCoordenadas(tablero, columna, fila, profundidad)){
 				if(!tablero->casilleroEstaVacio(profundidad, fila, columna) &&
-					tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() != fichaJugadorActual){
+					tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() == fichaJugadorActual){
 					tablero->getCasilla(profundidad, fila, columna)->habilitar();
 					listo = true;
 				}
@@ -355,16 +353,18 @@ TATETI::TATETI(){
 	    this->cantidadDeFichasPorJugador = 0;
 
 	    this->nombreDelArchivoBMP = "";
+
+	    this->cantidadMaximaCartasPorJugador = CARTAS_MAXIMAS_POR_JUGADOR;
 }
 
 TATETI::~TATETI(){
 	delete this->tablero;
-	// vamos borrando los punteros a turnos de las colas jugadores y desencola todos los nodos de la cola 
+	// vamos borrando los punteros a turnos de las colas jugadores y desencola todos los nodos de la cola
 	while(this->turnos->front() != NULL){
 		delete this->turnos->front();
 		this->turnos->desacolar();
 	}
-	// borramos todos los punteros a carta y desacolamos los nodos de la cola de cartas 
+	// borramos todos los punteros a carta y desacolamos los nodos de la cola de cartas
 	while(this->cartas->front() != NULL){
 		delete this->cartas->front();
 		this->cartas->desacolar();
@@ -391,8 +391,6 @@ void TATETI::iniciarJuego(){
 	this->inicializarJugadores();
 
 	cout<<"\n";
-
-	this->pedirNombreDelArchivoBMP();
 
 	this->crearCartas();
 
@@ -522,8 +520,8 @@ void TATETI::pedirNombreDelArchivoBMP(){
 void TATETI::crearCartas(){
 	int contadorCartasEmitidas = 1;
 
-	while(contadorCartasEmitidas <= this->cantidadDeJugadores * 2){
-		// se agrega una instancia de carta con un numero en el rango de cartas disponibles 
+	while(contadorCartasEmitidas <= this->cantidadDeJugadores * this->getCantidadMaximaCartasPorJugador()){
+		// se agrega una instancia de carta con un numero en el rango de cartas disponibles
 		this->cartas->acolar(new Carta(rand() % 6));
 		contadorCartasEmitidas++;
 	}
@@ -532,13 +530,12 @@ void TATETI::crearCartas(){
 void TATETI::repartirCartas(){
 	Lista<Carta*> *cartasJugadorActual = this->turnos->front()->getCartasDelJugador();
 
-	if(cartasJugadorActual->contarElementos() < 3){
+	if(cartasJugadorActual->contarElementos() < this->getCantidadMaximaCartasPorJugador()){
 		Carta *carta = this->cartas->front();
 		cartasJugadorActual->add(carta);
 		this->cartas->desacolar();
 		this->cartas->acolar(carta);
 	}
-
 }
 
 void TATETI::mostrarCartas(Lista<Carta*> *cartas){
@@ -553,21 +550,29 @@ void TATETI::mostrarCartas(Lista<Carta*> *cartas){
 
 void TATETI::jugarPartida(){
 
-	if(this->insertarFichas()){
-		cout<<"Estado final del tablero: "<<endl<<endl;
-		this->imprimirTableros();
-		cout<<endl;
-		this->tablero->generarBitMap("Tablero_final.bmp");
-		return;
-	}
+	this->pedirNombreDelArchivoBMP();
 
-	this->moverFichas();
+	string nombreDelArchivoFinal = this->nombreDelArchivoBMP;
 
-	cout<<"Estado final del tablero: "<<endl<<endl;
-	this->imprimirTableros();
-	cout<<endl;
+    nombreDelArchivoFinal += "final.bmp";
 
-	this->tablero->generarBitMap("Tablero_final.bmp");
+    if(this->insertarFichas()){
+        cout<<"Estado final del tablero: "<<endl<<endl;
+        this->imprimirTableros();
+        cout<<endl;
+        this->tablero->generarBitMap(nombreDelArchivoFinal);
+        this->tablero->reiniciar();
+        return;
+    }
+
+    this->moverFichas();
+
+    cout<<"Estado final del tablero: "<<endl<<endl;
+    this->imprimirTableros();
+    cout<<endl;
+
+    this->tablero->generarBitMap(nombreDelArchivoFinal);
+    this->tablero->reiniciar();
 }
 
 void intToString(int n, char cadena[]){
@@ -603,7 +608,6 @@ void TATETI::utilizarCarta(){
 
 	char opcion;
 	bool listo = false;
-	bool jugadorPierdeUnTurno;
 
 	while(!listo){
 		cout<<"\nDesea utilizar una carta [Y/N]";
@@ -622,8 +626,12 @@ void TATETI::utilizarCarta(){
 				int numero = atoi(numeroDeCarta.c_str());
 
 				if(numero > 0 && numero <= (int)cartasJugadorActual->contarElementos()){
-					cartasJugadorActual->get(numero)->utilizarCarta(this->tablero, this->turnos);
+
+					Carta* cartaAUtilizar = cartasJugadorActual->get(numero);
+					cartaAUtilizar->utilizarCarta(this->tablero, this->turnos);
 					cartasJugadorActual->remover(numero);
+					this->cartas->acolar(cartaAUtilizar);
+
 					cout<<endl;
 					this->imprimirTableros();
 					cout<<endl;
@@ -654,9 +662,9 @@ bool TATETI::insertarFichas(){
 
 	while(contador < this->cantidadDeFichasPorJugador * this->cantidadDeJugadores
 			&& !finalizoLaPartida){
-		Turnos *turnoActual = this->turnos->front();
-		Jugador *jugadorActual = turnoActual->getJugador();
-		Lista<Carta*> *cartasJugadorActual = turnoActual->getCartasDelJugador();
+
+		Jugador *jugadorActual = this->turnos->front()->getJugador();
+
 
 		string nombreDelArchivoBMP = this->nombreDelArchivoBMP;
 		char numero[3];
@@ -713,6 +721,8 @@ bool TATETI::insertarFichas(){
 					}
 
 
+					this->tablero->generarBitMap(nombreDelArchivoBMP);
+					Turnos *turnoActual = this->turnos->front();
 					turnos->desacolar();
 					turnos->acolar(turnoActual);
 					contador++;
@@ -735,7 +745,7 @@ bool TATETI::insertarFichas(){
 	return finalizoLaPartida;
 }
 
-bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
+void TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 	bool listo = false;
 	char entrada;
 
@@ -748,7 +758,8 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 
 		switch(entrada){
 			case 'P': case 'p':
-			return true;
+			listo = true;
+			break;
 		case 'W':case 'w':
 			if(fila-1 != 0){
 				if(this->tablero->casilleroEstaVacio(profundidad, fila-1, columna)
@@ -756,10 +767,6 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 					this->tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					this->tablero->getCasilla(profundidad, fila-1, columna)->setFicha(ficha);
 					this->tablero->setUltimaPosicion(profundidad, fila-1, columna);
-					if(this->tablero->hayTateti(this->getCantidadDeFichasPorJugador())){
-						return true;
-					}
-
 					listo = true;
 
 				}
@@ -782,10 +789,6 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					tablero->getCasilla(profundidad, fila, columna-1)->setFicha(ficha);
 					this->tablero->setUltimaPosicion(profundidad, fila, columna-1);
-					if(tablero->hayTateti( this->getCantidadDeFichasPorJugador())){
-						return true;
-					}
-
 					listo = true;
 				}
 
@@ -808,10 +811,6 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					tablero->getCasilla(profundidad, fila+1, columna)->setFicha(ficha);
 					this->tablero->setUltimaPosicion(profundidad, fila+1, columna);
-					if(tablero->hayTateti( this->getCantidadDeFichasPorJugador())){
-						return true;
-					}
-
 					listo = true;
 				}
 
@@ -833,9 +832,6 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					tablero->getCasilla(profundidad, fila, columna+1)->setFicha(ficha);
 					this->tablero->setUltimaPosicion(profundidad, fila, columna+1);
-					if(tablero->hayTateti(this->getCantidadDeFichasPorJugador())){
-						return true;
-					}
 
 					listo = true;
 				}
@@ -858,10 +854,6 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					tablero->getCasilla(profundidad-1, fila, columna)->setFicha(ficha);
 					this->tablero->setUltimaPosicion(profundidad - 1, fila, columna);
-					if(tablero->hayTateti( this->getCantidadDeFichasPorJugador())){
-						return true;
-					}
-
 					listo = true;
 				}
 
@@ -883,10 +875,6 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					tablero->getCasilla(profundidad+1, fila, columna)->setFicha(ficha);
 					this->tablero->setUltimaPosicion(profundidad +1, fila, columna);
-					if(tablero->hayTateti( this->getCantidadDeFichasPorJugador())){
-						return true;
-					}
-
 					listo = true;
 				}
 				else{
@@ -906,8 +894,6 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 		}
 
 	}
-
-	return false;
 }
 
 
@@ -918,9 +904,7 @@ void TATETI::moverFichas(){
 	while(!finalizoLaPartida){
 		string cadenaColumna, cadenaFila, cadenaProfundidad;
 
-		Turnos *turnoActual = this->turnos->front();
-		Jugador* jugadorActual = turnoActual->getJugador();
-		Lista<Carta*> *cartasJugadorActual = turnoActual->getCartasDelJugador();
+		Jugador *jugadorActual = this->turnos->front()->getJugador();
 
 		string nombreDelArchivoBMP = this->nombreDelArchivoBMP;
 
@@ -952,9 +936,11 @@ void TATETI::moverFichas(){
 			if(this->validarCoordenadas(columna, fila, profundidad) ){
 
 				char ficha = jugadorActual->obtenerFicha();
-				if((tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() == ficha) && 
+				if((tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() == ficha) &&
 					(tablero->getCasilla(profundidad, fila, columna)->estaDisponible()) ){
-					if(this->pedirDireccionAMover(columna, fila, profundidad)){
+					this->pedirDireccionAMover(columna, fila, profundidad);
+
+					if(this->tablero->hayTateti(this->getCantidadDeFichasPorJugador())){
 						cout<<jugadorActual->obtenerNombre()<<" gano la partida"<<endl;
 						jugadorActual->ganoLaPartida();
 						finalizoLaPartida = true;
@@ -975,6 +961,8 @@ void TATETI::moverFichas(){
 						}
 					}
 
+					this->tablero->generarBitMap(nombreDelArchivoBMP);
+					Turnos *turnoActual = this->turnos->front();
 					this->turnos->desacolar();
 					this->turnos->acolar(turnoActual);
 
@@ -995,6 +983,8 @@ void TATETI::moverFichas(){
 		}
 	}
 }
+
+
 
 bool TATETI::validarCoordenadas(int columna, int fila, int profundidad){
 	if(columna > 0 && columna <= this->tablero->getAncho() &&
