@@ -23,11 +23,12 @@ public:
 	// post: dependiendo de la carta, aplica su funcionalidad en el juego
 	void utilizarCarta(Tablero *tablero, Cola<Turnos*> *turnos);
 
+
 private:
 	void jugadorPierdeUnTurno(Tablero *tablero, Cola<Turnos*> *turnos);
 	void bloquearFicha(Tablero *tablero, Cola<Turnos*> *turnos);
 	void anularCasillero(Tablero *tablero, Cola<Turnos*> *turnos);
-	void moverFicha(Tablero *tablero, Cola<Turnos*> *turnos);
+	void cambiarFichaDeLugar(Tablero *tablero, Cola<Turnos*> *turnos);
 	void volverAtrasUnTurno(Tablero *tablero, Cola<Turnos*> *turnos);
 	void intercambiarFichasDeLugar(Tablero *tablero, Cola<Turnos*> *turnos);
 };
@@ -40,6 +41,7 @@ public:
 	Turnos(Jugador *jugador, Lista<Carta*> *cartasDelJugador);
 	Jugador *getJugador();
 	Lista<Carta*> *getCartasDelJugador();
+	~Turnos();
 };
 
 class TATETI{

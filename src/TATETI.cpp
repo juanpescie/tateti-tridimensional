@@ -48,14 +48,13 @@ bool esUnNumero(string cadena){
 
 void Carta::jugadorPierdeUnTurno(Tablero *tablero, Cola<Turnos*> *turnos){
 	Turnos *turnoActual = turnos->front();
+	turnos->desacolar();
 	turnos->acolar(turnoActual);
 
 	turnoActual = turnos->front();
 
 	cout<<turnoActual->getJugador()->obtenerNombre()<<" pierde un turno"<<endl;
 }
-
-
 
 void Carta::bloquearFicha(Tablero *tablero, Cola<Turnos*> *turnos){
 	string cadenaColumna, cadenaFila, cadenaProfundidad;
@@ -148,6 +147,7 @@ void Carta::anularCasillero(Tablero *tablero, Cola<Turnos*> *turnos){
 		}
 	}
 }
+
 void Carta::volverAtrasUnTurno(Tablero *tablero, Cola<Turnos*> *turnos){
 	int ultimaColumna = tablero->getUltimaColumna();
 	int ultimaFila = tablero->getUltimaFila();
@@ -160,7 +160,7 @@ void Carta::volverAtrasUnTurno(Tablero *tablero, Cola<Turnos*> *turnos){
 	}*/
 }
 
-void Carta::moverFicha(Tablero *tablero, Cola<Turnos*> *turnos){
+void Carta::cambiarFichaDeLugar(Tablero *tablero, Cola<Turnos*> *turnos){
 	bool listo = false;
 	char ficha = turnos->front()->getJugador()->obtenerFicha();
 
@@ -210,7 +210,13 @@ void Carta::moverFicha(Tablero *tablero, Cola<Turnos*> *turnos){
 						&& tablero->getCasilla(profundidadAMover, filaAMover, columnaAMover)->estaDisponible()){
 					tablero->setCasilla(profundidad, fila, columna, ' ');
 					tablero->setCasilla(profundidadAMover, filaAMover, columnaAMover, ficha);
-
+					tablero->setUltimaPosicion(profundidadAMover, filaAMover, columnaAMover);
+					cout<<"x ultima: "<<tablero->getUltimaColumna() <<endl;
+					cout<<"y Ultima: "<<tablero->getUltimaFila() <<endl;
+					cout<<"z ultima: "<<tablero->getUltimaProfundidad()<<endl;
+					cout<<endl;
+					cout<<"VECINOS"<<endl;
+					tablero->getCasilla(profundidadAMover, filaAMover, columnaAMover)->mostrarVecinos();
 					listo = true;
 				}
 
@@ -232,54 +238,61 @@ void Carta::moverFicha(Tablero *tablero, Cola<Turnos*> *turnos){
 
 void Carta::intercambiarFichasDeLugar(Tablero *tablero, Cola<Turnos*> *turnos){
 	bool listo = false;
+	char ficha = turnos->front()->getJugador()->obtenerFicha();
 
 	while(!listo){
-		string cadenaColumna1, cadenaFila1, cadenaProfundidad1;
-		string cadenaColumna2, cadenaFila2, cadenaProfundidad2;
+		string cadenaColumna, cadenaFila, cadenaProfundidad;
+		string cadenaColumnaAMover, cadenaFilaAMover, cadenaProfundidadAMover;
 
-		cout<<"Ingrese las coordenadas del primer casillero con que desea intercambiar: "<<endl;
+		cout<<"Ingrese las coordenadas de la ficha que desea mover: "<<endl;
 		cout<<"Columna: ";
-		cin>>cadenaColumna1;
+		cin>>cadenaColumna;
 
 		cout<<"Fila: ";
-		cin>>cadenaFila1;
+		cin>>cadenaFila;
 
 		cout<<"Profundidad: ";
-		cin>>cadenaProfundidad1;
+		cin>>cadenaProfundidad;
 
-		cout<<"Ingrese las coordenadas del segundo casillero que desea intercambiar: "<<endl;
+		cout<<"Ingrese la coordenada a la que desea mover la ficha: "<<endl;
 
 		cout<<"Columna: ";
-		cin>>cadenaColumna2;
+		cin>>cadenaColumnaAMover;
 
 		cout<<"Fila: ";
-		cin>>cadenaFila2;
+		cin>>cadenaFilaAMover;
 
 		cout<<"Profundidad: ";
-		cin>>cadenaProfundidad2;
+		cin>>cadenaProfundidadAMover;
 
-		if(esUnNumero(cadenaColumna1) && esUnNumero(cadenaFila1) && esUnNumero(cadenaProfundidad1) &&
-				esUnNumero(cadenaColumna2) && esUnNumero(cadenaFila2) && esUnNumero(cadenaProfundidad2)){
+		if(esUnNumero(cadenaColumna) && esUnNumero(cadenaFila) && esUnNumero(cadenaProfundidad) &&
+				esUnNumero(cadenaColumnaAMover) && esUnNumero(cadenaFilaAMover) && esUnNumero(cadenaProfundidadAMover)){
 
-			int columna1 = atoi(cadenaColumna1.c_str());
-			int fila1 = atoi(cadenaFila1.c_str());
-			int profundidad1 = atoi(cadenaProfundidad1.c_str());
+			int columna = atoi(cadenaColumna.c_str());
+			int fila = atoi(cadenaFila.c_str());
+			int profundidad = atoi(cadenaProfundidad.c_str());
 
-			int columna2 = atoi(cadenaColumna2.c_str());
-			int fila2 = atoi(cadenaFila2.c_str());
-			int profundidad2 = atoi(cadenaProfundidad2.c_str());
+			int columnaAMover = atoi(cadenaColumnaAMover.c_str());
+			int filaAMover = atoi(cadenaFilaAMover.c_str());
+			int profundidadAMover = atoi(cadenaProfundidadAMover.c_str());
 
 
-			if(validarCoordenadas(tablero, columna1, fila1, profundidad1) &&
-					validarCoordenadas(tablero, columna2, fila2, profundidad2)){
-						// guardamos lso dos caracteres en variables para no pererlos una vez que intercambiamos
-						// las fichas 
-						char caracterCasillero1 = tablero->getCasilla(profundidad1, fila1, columna1)->mostrarFicha();
-						char caracterCasillero2 = tablero->getCasilla(profundidad2, fila2, columna2)->mostrarFicha();
+			if(validarCoordenadas(tablero, columna, fila, profundidad) &&
+					validarCoordenadas(tablero, columnaAMover, filaAMover, profundidadAMover)){
 
-						tablero->setCasilla(profundidad1, fila1, columna1, caracterCasillero2);
-						tablero->setCasilla(profundidad2, fila2, columna2, caracterCasillero1);
-						listo = true;
+
+				if(tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() == ficha &&
+						!tablero->casilleroEstaVacio(profundidadAMover, filaAMover, columnaAMover)){
+					char fichaACambiar = tablero->getCasilla(profundidadAMover, filaAMover, columnaAMover)->mostrarFicha();
+					tablero->setCasilla(profundidad, fila, columna, fichaACambiar);
+					tablero->setCasilla(profundidadAMover, filaAMover, columnaAMover, ficha);
+					tablero->setUltimaPosicion(profundidadAMover, filaAMover, columnaAMover);
+					listo = true;
+				}
+
+				else{
+					cout<<"Movimiento invalido"<<endl;
+				}
 			}
 
 			else{
@@ -288,11 +301,10 @@ void Carta::intercambiarFichasDeLugar(Tablero *tablero, Cola<Turnos*> *turnos){
 		}
 
 		else{
-			cout<<"No se han ingresado un numeros validos"<<endl;
+			cout<<"No se ha ingresado un numero valido"<<endl;
 		}
 	}
 }
-
 
 void Carta::utilizarCarta(Tablero *tablero, Cola<Turnos*> *turnos){
 	switch(this->numero % 6){
@@ -309,15 +321,22 @@ void Carta::utilizarCarta(Tablero *tablero, Cola<Turnos*> *turnos){
 		break;
 
 	case 3:
-		this->moverFicha(tablero, turnos);
+		this->volverAtrasUnTurno(tablero, turnos);
 		break;
-	case 5: 
+
+	case 4:
+		this->cambiarFichaDeLugar(tablero, turnos);
+		break;
+
+	case 5:
 		this->intercambiarFichasDeLugar(tablero, turnos);
 		break;
+
 	default:
 		cout<<"Se utilizo la carta"<<endl<<endl;
 		break;
 	}
+
 }
 
 
@@ -332,6 +351,17 @@ Lista<Carta*> *Turnos::getCartasDelJugador(){
 
 Jugador* Turnos::getJugador(){
 	return this->jugador;
+}
+
+
+Turnos::~Turnos(){
+	delete this-> jugador;
+	this->cartasDelJugador->reiniciarCursor();
+	while(this->cartasDelJugador->avanzarCursor()){
+		Carta* carta = this->cartasDelJugador->getCursor();
+		delete carta;
+	}
+	delete this->cartasDelJugador;
 }
 
 
@@ -351,7 +381,7 @@ TATETI::TATETI(){
 
 TATETI::~TATETI(){
 	delete this->tablero;
-	// vamos borrando los punteros a jugador de las colas jugadores y desencola todos los nodos de la cola 
+	// vamos borrando los punteros a turnos de las colas jugadores y desencola todos los nodos de la cola 
 	while(this->turnos->front() != NULL){
 		delete this->turnos->front();
 		this->turnos->desacolar();
@@ -361,15 +391,7 @@ TATETI::~TATETI(){
 		delete this->cartas->front();
 		this->cartas->desacolar();
 	}
-	// borramos los punteros a a cartas y las listas de cartas que hay dentor de la cola cartasJugadores
-	// while(this->turnos->front() != NULL){
-	// 	Turnos* turnos = this->turnos->front();
-	// 	turnos->reiniciarCursor();
-	// 	while(turnos->avanzarCursor()){
-	// 		delete turnos->getCursor();
-	// 	}
-	// 	delete turnos;
-	// }
+
 }
 int TATETI::getCantidadDeFichasPorJugador(){
 	return this->cantidadDeFichasPorJugador;
@@ -412,7 +434,6 @@ bool esUnNumero1(string cadena){
 
 	return true;
 }
-
 
 void TATETI::pedirDimensionesDelTablero(){
     cout<<"Ingrese las dimensiones del tablero: "<<endl;
@@ -691,20 +712,29 @@ bool TATETI::insertarFichas(){
 						&& this->tablero->getCasilla(profundidad, fila, columna)->estaDisponible()){
 
 					this->tablero->getCasilla(profundidad, fila, columna)->setFicha(jugadorActual->obtenerFicha());
-
-					if(tablero->hayTateti(tablero->getCasilla(profundidad, fila, columna),this->getCantidadDeFichasPorJugador())){
+					this->tablero->setUltimaPosicion(profundidad, fila, columna);
+					if(this->tablero->hayTateti(this->getCantidadDeFichasPorJugador())){
 						cout<<jugadorActual->obtenerNombre()<<" gano la partida"<<endl;
 						jugadorActual->ganoLaPartida();
-						finalizoLaPartida = true;
+						return true;
 					}
+
 
 					this->repartirCartas();
 					cout<<endl;
 					this->imprimirTableros();
 					cout<<endl;
-					this->tablero->setUltimaPosicion(profundidad, fila, columna);
-					this->utilizarCarta();
-					//comprobar si hay tateti
+					if(!finalizoLaPartida){
+						this->utilizarCarta();
+						// se setea la ultima posicion en coordenadadas en utilizarCarta
+						if(this->tablero->hayTateti(this->getCantidadDeFichasPorJugador())){
+							cout<<jugadorActual->obtenerNombre()<<" gano la partida"<<endl;
+							jugadorActual->ganoLaPartida();
+							finalizoLaPartida = true;
+						}
+					}
+
+
 					turnos->desacolar();
 					turnos->acolar(turnoActual);
 					contador++;
@@ -747,8 +777,8 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 						&& this->tablero->getCasilla(profundidad, fila-1, columna)->estaDisponible()){
 					this->tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					this->tablero->getCasilla(profundidad, fila-1, columna)->setFicha(ficha);
-
-					if(this->tablero->hayTateti(tablero->getCasilla(profundidad, fila-1, columna), this->getCantidadDeFichasPorJugador())){
+					this->tablero->setUltimaPosicion(profundidad, fila-1, columna);
+					if(this->tablero->hayTateti(this->getCantidadDeFichasPorJugador())){
 						return true;
 					}
 
@@ -773,8 +803,8 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 						&& tablero->getCasilla(profundidad, fila, columna-1)->estaDisponible()){
 					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					tablero->getCasilla(profundidad, fila, columna-1)->setFicha(ficha);
-
-					if(tablero->hayTateti(tablero->getCasilla(profundidad, fila, columna-1), this->getCantidadDeFichasPorJugador())){
+					this->tablero->setUltimaPosicion(profundidad, fila, columna-1);
+					if(tablero->hayTateti( this->getCantidadDeFichasPorJugador())){
 						return true;
 					}
 
@@ -799,8 +829,8 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 						&& tablero->getCasilla(profundidad, fila+1, columna)->estaDisponible()){
 					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					tablero->getCasilla(profundidad, fila+1, columna)->setFicha(ficha);
-
-					if(tablero->hayTateti(tablero->getCasilla(profundidad, fila+1, columna), this->getCantidadDeFichasPorJugador())){
+					this->tablero->setUltimaPosicion(profundidad, fila+1, columna);
+					if(tablero->hayTateti( this->getCantidadDeFichasPorJugador())){
 						return true;
 					}
 
@@ -824,8 +854,8 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 						&& tablero->getCasilla(profundidad, fila, columna+1)->estaDisponible()){
 					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					tablero->getCasilla(profundidad, fila, columna+1)->setFicha(ficha);
-
-					if(tablero->hayTateti(tablero->getCasilla(profundidad, fila, columna+1), this->getCantidadDeFichasPorJugador())){
+					this->tablero->setUltimaPosicion(profundidad, fila, columna+1);
+					if(tablero->hayTateti(this->getCantidadDeFichasPorJugador())){
 						return true;
 					}
 
@@ -849,8 +879,8 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 						&& tablero->getCasilla(profundidad-1, fila, columna)->estaDisponible()){
 					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					tablero->getCasilla(profundidad-1, fila, columna)->setFicha(ficha);
-
-					if(tablero->hayTateti(tablero->getCasilla(profundidad-1, fila, columna), this->getCantidadDeFichasPorJugador())){
+					this->tablero->setUltimaPosicion(profundidad - 1, fila, columna);
+					if(tablero->hayTateti( this->getCantidadDeFichasPorJugador())){
 						return true;
 					}
 
@@ -874,8 +904,8 @@ bool TATETI::pedirDireccionAMover(int columna, int fila, int profundidad){
 						&& tablero->getCasilla(profundidad+1, fila, columna)->estaDisponible()){
 					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
 					tablero->getCasilla(profundidad+1, fila, columna)->setFicha(ficha);
-
-					if(tablero->hayTateti(tablero->getCasilla(profundidad+1, fila, columna), this->getCantidadDeFichasPorJugador())){
+					this->tablero->setUltimaPosicion(profundidad +1, fila, columna);
+					if(tablero->hayTateti( this->getCantidadDeFichasPorJugador())){
 						return true;
 					}
 
@@ -952,15 +982,19 @@ void TATETI::moverFichas(){
 					}
 
 					this->repartirCartas();
-					//jugadores->desacolar();
-					//jugadores->acolar(jugadorActual);
 					cout<<endl;
 					this->imprimirTableros();
 					cout<<endl;
-					//contador++;
 
-					this->utilizarCarta();
-					//verificar si hay tateti
+					if(!finalizoLaPartida){
+						this->utilizarCarta();
+						// se setea la ultima posicion en coordenadadas en utilizarCarta
+						if(this->tablero->hayTateti(this->getCantidadDeFichasPorJugador())){
+							cout<<jugadorActual->obtenerNombre()<<" gano la partida"<<endl;
+							jugadorActual->ganoLaPartida();
+							finalizoLaPartida = true;
+						}
+					}
 
 					this->turnos->desacolar();
 					this->turnos->acolar(turnoActual);

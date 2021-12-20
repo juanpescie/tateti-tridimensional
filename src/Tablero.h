@@ -17,9 +17,9 @@ private:
 	bool profundidadValida(int profundidad);
 	bool alturaValida(int altura);
 	bool anchoValido(int ancho);
-	int ultimaPosicionX;
-	int ultimaPosicionY;
-	int ultimaPosicionZ;
+	int ultimaProfundidad;
+	int ultimaColumna;
+	int ultimaFila;
 
 public:
 	// pre: numeros positivos en todos los parametros
@@ -60,7 +60,7 @@ public:
 	// post: devuelve true si se formo tateti con la canatidad de fichas que se le pasa por parametro(fichasaraGanar),
 	// el tablero tiene que tener en linea recta con el mismo caracter del casilleroAChequear
 	// false en el caso contrario
-	bool hayTateti(Casillero* casilleroAChequear, int cantidadDeFichasParaGanar);
+	bool hayTateti(int cantidadDeFichasParaGanar);
 	// pre: dimensiones validas
 	// devuelve true si el casillero que se encuentra en esa posicion tiene un caracter distinto al espacio
 	bool casilleroEstaVacio(int profundidad, int fila, int columna);

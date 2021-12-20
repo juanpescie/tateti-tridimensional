@@ -19,9 +19,9 @@ Tablero::Tablero(unsigned int Profundidad, unsigned int cantidadFilas, unsigned 
 	this->altura = cantidadFilas;
 	this->ancho = cantidadColumnas;
 	this->casilleros = new Lista<Lista<Lista<Casillero*>*>*>();
-	this->ultimaPosicionX = 0;
-	this->ultimaPosicionY = 0;
-	this->ultimaPosicionZ = 0;
+	this->ultimaFila = -1;
+	this->ultimaColumna = -1;
+	this->ultimaProfundidad = -1;
 
 	for(int i=0; i<Profundidad; i++){
 		Lista<Lista<Casillero*>*>* capa = new Lista<Lista<Casillero*>*>();
@@ -89,19 +89,19 @@ int Tablero::getProfundidad(){
 	return this->profundidad;
 }
 void Tablero::setUltimaPosicion(int profundidad, int fila, int columna){
-	this->ultimaPosicionX = columna, this->ultimaPosicionY = fila, this->ultimaPosicionZ = profundidad;
+	this->ultimaColumna = columna, this->ultimaFila = fila, this->ultimaProfundidad = profundidad;
 }
 
 int Tablero::getUltimaProfundidad(){
-	return this->ultimaPosicionZ;
+	return this->ultimaProfundidad;
 }
 
 int Tablero::getUltimaColumna(){
-	return this->ultimaPosicionX;
+	return this->ultimaColumna;
 }
 
 int Tablero::getUltimaFila(){
-	return this->ultimaPosicionY;
+	return this->ultimaFila;
 }
 
 Casillero* Tablero::getCasilla(int profundidad, int fila, int columna){
@@ -116,7 +116,8 @@ bool Tablero::existeCasilla(int profundidad,int fila, int columna){
 	return(profundidadValida(profundidad) && alturaValida(fila) && anchoValido(columna));
 }
 
-bool Tablero::hayTateti(Casillero* casilleroAChequear, int cantidadDeFichasParaGanar){
+bool Tablero::hayTateti(int cantidadDeFichasParaGanar){
+	Casillero * casilleroAChequear = this->getCasilla(this->ultimaProfundidad, this->ultimaFila, this->ultimaColumna);
     int longitudesAdyacentes[3][3][3];
     int sumaLongitudes[13];
 

@@ -35,26 +35,18 @@ public:
 	// pre: ninguna
 	// post: el casillero queda bloqueado hasta que se desbloquee
 	void bloquear();
-	void asignarVecino1(int fila, int columna, Casillero* casillero);
 	// pre: enteros positivos menores a 3
 	// post: el casillero tiene un nuevo valor en el atributo vecinos en la coordenada que se le pasa por parametros
 	void asignarVecino(int profundidad, int fila, int columna, Casillero* casillero);
-
-	void mostrarVecinosDelAdyacente(int i, int j);
-	void mostrarVecinos1();
 	// pre: ninguna
 	// post: muestra por consola por capas, los vecinos del casillero 
 	void mostrarVecinos();
-	int getLongitud1(int i, int j);
 	// pre: ninguna
 	// post: devuelve la cantidad de casillero seguidos con la misma ficha en linea
 	int getLongitud(int profundidad, int fila, int columna);
-	Casillero* getAdyacente1(int i, int j);
 	// pre: ninguna 
 	// post: devuelve el casillero que esta al lado en la posicion que se pasa por parametro 
 	Casillero* getAdyacente(int profundidad, int fila, int columna);
-
-	bool tieneAdyacente1(int i, int j);
 	// pre: ninguna
 	// post: devuelve true si su casillero vecino no es nulo, o false si lo es 
 	bool tieneAdyacente(int profundidad, int fila, int columna);
