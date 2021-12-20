@@ -12,8 +12,8 @@ string cartasDescripcion[6]{
 	"Bloquear una ficha de otro jugador",
 	"Anular casillero",
 	"Volver atras una jugada",
-	"Mover ficha",
-	"Intercambiar dos fichas",
+	"Habilitar un Casillero",
+	"Desbloquear una ficha",
 };
 const int CARTAS_MAXIMAS_POR_JUGADOR = 3;
 
@@ -27,6 +27,8 @@ bool validarCoordenadas(Tablero *tablero, int columna, int fila, int profundidad
 			return false;
 		}
 }
+
+
 Carta::Carta(int numero){
 	this->numero = numero;
 	this->descripcion = cartasDescripcion[numero % 6];
@@ -80,9 +82,7 @@ void Carta::bloquearFicha(Tablero *tablero, Cola<Turnos*> *turnos){
 			int profundidad = atoi(cadenaProfundidad.c_str());
 
 			if(validarCoordenadas(tablero, columna, fila, profundidad)){
-				if(!tablero->casilleroEstaVacio(profundidad, fila, columna) &&
-					tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() != fichaJugadorActual){
-
+				if(!tablero->casilleroEstaVacio(profundidad, fila, columna)){
 					tablero->getCasilla(profundidad, fila, columna)->bloquear();
 					listo = true;
 
@@ -151,24 +151,54 @@ void Carta::anularCasillero(Tablero *tablero, Cola<Turnos*> *turnos){
 void Carta::volverAtrasUnTurno(Tablero *tablero, Cola<Turnos*> *turnos){
 	int ultimaColumna = tablero->getUltimaColumna();
 	int ultimaFila = tablero->getUltimaFila();
-	int ultimaProfundidad = tablero->getUltimaProfundidad();
+	int ultimaProfundidad = tablero->getUltimaProfundidad(); 
 	char ficha = turnos->front()->getJugador()->obtenerFicha();
-
-	/*if(validarCoordenadas(tablero, ultimaProfundidad-1, ultimaFila, ultimaColumna) &&
+	if(validarCoordenadas(tablero, ultimaProfundidad-1, ultimaFila, ultimaColumna) &&
 			tablero->getCasilla(ultimaProfundidad-1, ultimaFila, ultimaColumna)->mostrarFichaAnterior() == ficha){
+				tablero->getCasilla(ultimaProfundidad-1, ultimaFila, ultimaColumna)->setFicha(ficha);
+				tablero->getCasilla(ultimaProfundidad, ultimaFila, ultimaColumna)->setFicha(' ');
 
-	}*/
+	}
+
+	if(validarCoordenadas(tablero, ultimaProfundidad+1, ultimaFila, ultimaColumna) &&
+			tablero->getCasilla(ultimaProfundidad+1, ultimaFila, ultimaColumna)->mostrarFichaAnterior() == ficha){
+				tablero->getCasilla(ultimaProfundidad + 1, ultimaFila, ultimaColumna)->setFicha(ficha);
+				tablero->getCasilla(ultimaProfundidad, ultimaFila, ultimaColumna)->setFicha(' ');
+	}
+
+	if(validarCoordenadas(tablero, ultimaProfundidad, ultimaFila-1, ultimaColumna) &&
+			tablero->getCasilla(ultimaProfundidad, ultimaFila-1, ultimaColumna)->mostrarFichaAnterior() == ficha){
+				tablero->getCasilla(ultimaProfundidad, ultimaFila -1, ultimaColumna)->setFicha(ficha);
+				tablero->getCasilla(ultimaProfundidad, ultimaFila, ultimaColumna)->setFicha(' ');
+	}
+
+	if(validarCoordenadas(tablero, ultimaProfundidad, ultimaFila+1, ultimaColumna) &&
+			tablero->getCasilla(ultimaProfundidad, ultimaFila+1, ultimaColumna)->mostrarFichaAnterior() == ficha){
+				tablero->getCasilla(ultimaProfundidad, ultimaFila + 1, ultimaColumna)->setFicha(ficha);
+				tablero->getCasilla(ultimaProfundidad, ultimaFila, ultimaColumna)->setFicha(' ');
+	}
+
+	if(validarCoordenadas(tablero, ultimaProfundidad, ultimaFila, ultimaColumna-1) &&
+			tablero->getCasilla(ultimaProfundidad, ultimaFila, ultimaColumna-1)->mostrarFichaAnterior() == ficha){
+				tablero->getCasilla(ultimaProfundidad, ultimaFila, ultimaColumna-1)->setFicha(ficha);
+				tablero->getCasilla(ultimaProfundidad, ultimaFila, ultimaColumna)->setFicha(' ');
+	}
+
+	if(validarCoordenadas(tablero, ultimaProfundidad, ultimaFila, ultimaColumna+1) &&
+			tablero->getCasilla(ultimaProfundidad, ultimaFila, ultimaColumna+1)->mostrarFichaAnterior() == ficha){
+				tablero->getCasilla(ultimaProfundidad, ultimaFila, ultimaColumna+1)->setFicha(ficha);
+				tablero->getCasilla(ultimaProfundidad, ultimaFila, ultimaColumna)->setFicha(' ');
+	}
+
 }
 
-void Carta::cambiarFichaDeLugar(Tablero *tablero, Cola<Turnos*> *turnos){
+void Carta::habilitarCasillero(Tablero *tablero, Cola<Turnos*> *turnos){
+	string cadenaColumna, cadenaFila, cadenaProfundidad;
 	bool listo = false;
-	char ficha = turnos->front()->getJugador()->obtenerFicha();
 
 	while(!listo){
-		string cadenaColumna, cadenaFila, cadenaProfundidad;
-		string cadenaColumnaAMover, cadenaFilaAMover, cadenaProfundidadAMover;
+		cout<<"Ingrese las coordenadas del casillero que desea habilitar: "<<endl;
 
-		cout<<"Ingrese las coordenadas de la ficha que desea mover: "<<endl;
 		cout<<"Columna: ";
 		cin>>cadenaColumna;
 
@@ -178,50 +208,20 @@ void Carta::cambiarFichaDeLugar(Tablero *tablero, Cola<Turnos*> *turnos){
 		cout<<"Profundidad: ";
 		cin>>cadenaProfundidad;
 
-		cout<<"Ingrese la coordenada a la que desea mover la ficha: "<<endl;
-
-		cout<<"Columna: ";
-		cin>>cadenaColumnaAMover;
-
-		cout<<"Fila: ";
-		cin>>cadenaFilaAMover;
-
-		cout<<"Profundidad: ";
-		cin>>cadenaProfundidadAMover;
-
-		if(esUnNumero(cadenaColumna) && esUnNumero(cadenaFila) && esUnNumero(cadenaProfundidad) &&
-				esUnNumero(cadenaColumnaAMover) && esUnNumero(cadenaFilaAMover) && esUnNumero(cadenaProfundidadAMover)){
-
+		if(esUnNumero(cadenaColumna) && esUnNumero(cadenaFila) && esUnNumero(cadenaProfundidad)){
 			int columna = atoi(cadenaColumna.c_str());
 			int fila = atoi(cadenaFila.c_str());
 			int profundidad = atoi(cadenaProfundidad.c_str());
 
-			int columnaAMover = atoi(cadenaColumnaAMover.c_str());
-			int filaAMover = atoi(cadenaFilaAMover.c_str());
-			int profundidadAMover = atoi(cadenaProfundidadAMover.c_str());
-
-
-			if(validarCoordenadas(tablero, columna, fila, profundidad) &&
-					validarCoordenadas(tablero, columnaAMover, filaAMover, profundidadAMover)){
-
-
-				if(tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() == ficha &&
-						tablero->casilleroEstaVacio(profundidadAMover, filaAMover, columnaAMover)
-						&& tablero->getCasilla(profundidadAMover, filaAMover, columnaAMover)->estaDisponible()){
-					tablero->setCasilla(profundidad, fila, columna, ' ');
-					tablero->setCasilla(profundidadAMover, filaAMover, columnaAMover, ficha);
-					tablero->setUltimaPosicion(profundidadAMover, filaAMover, columnaAMover);
-					cout<<"x ultima: "<<tablero->getUltimaColumna() <<endl;
-					cout<<"y Ultima: "<<tablero->getUltimaFila() <<endl;
-					cout<<"z ultima: "<<tablero->getUltimaProfundidad()<<endl;
-					cout<<endl;
-					cout<<"VECINOS"<<endl;
-					tablero->getCasilla(profundidadAMover, filaAMover, columnaAMover)->mostrarVecinos();
+			if(validarCoordenadas(tablero, columna, fila, profundidad)){
+				if(tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() == '/'){
+					tablero->getCasilla(profundidad, fila, columna)->setFicha(' ');
+					tablero->getCasilla(columna, fila, profundidad)->habilitar();
 					listo = true;
 				}
 
 				else{
-					cout<<"Movimiento invalido"<<endl;
+					cout<<"No se puede habilitar este casillero"<<endl;
 				}
 			}
 
@@ -236,15 +236,16 @@ void Carta::cambiarFichaDeLugar(Tablero *tablero, Cola<Turnos*> *turnos){
 	}
 }
 
-void Carta::intercambiarFichasDeLugar(Tablero *tablero, Cola<Turnos*> *turnos){
+
+void Carta::desbloquearFicha(Tablero *tablero, Cola<Turnos*> *turnos){
+	string cadenaColumna, cadenaFila, cadenaProfundidad;
 	bool listo = false;
-	char ficha = turnos->front()->getJugador()->obtenerFicha();
+
+	char fichaJugadorActual = turnos->front()->getJugador()->obtenerFicha();
 
 	while(!listo){
-		string cadenaColumna, cadenaFila, cadenaProfundidad;
-		string cadenaColumnaAMover, cadenaFilaAMover, cadenaProfundidadAMover;
+		cout<<"Ingrese las coordenadas de la ficha que desea desbloquear: ";
 
-		cout<<"Ingrese las coordenadas de la ficha que desea mover: "<<endl;
 		cout<<"Columna: ";
 		cin>>cadenaColumna;
 
@@ -254,44 +255,20 @@ void Carta::intercambiarFichasDeLugar(Tablero *tablero, Cola<Turnos*> *turnos){
 		cout<<"Profundidad: ";
 		cin>>cadenaProfundidad;
 
-		cout<<"Ingrese la coordenada a la que desea mover la ficha: "<<endl;
-
-		cout<<"Columna: ";
-		cin>>cadenaColumnaAMover;
-
-		cout<<"Fila: ";
-		cin>>cadenaFilaAMover;
-
-		cout<<"Profundidad: ";
-		cin>>cadenaProfundidadAMover;
-
-		if(esUnNumero(cadenaColumna) && esUnNumero(cadenaFila) && esUnNumero(cadenaProfundidad) &&
-				esUnNumero(cadenaColumnaAMover) && esUnNumero(cadenaFilaAMover) && esUnNumero(cadenaProfundidadAMover)){
-
+		if(esUnNumero(cadenaColumna) && esUnNumero(cadenaFila) && esUnNumero(cadenaProfundidad)){
 			int columna = atoi(cadenaColumna.c_str());
 			int fila = atoi(cadenaFila.c_str());
 			int profundidad = atoi(cadenaProfundidad.c_str());
 
-			int columnaAMover = atoi(cadenaColumnaAMover.c_str());
-			int filaAMover = atoi(cadenaFilaAMover.c_str());
-			int profundidadAMover = atoi(cadenaProfundidadAMover.c_str());
-
-
-			if(validarCoordenadas(tablero, columna, fila, profundidad) &&
-					validarCoordenadas(tablero, columnaAMover, filaAMover, profundidadAMover)){
-
-
-				if(tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() == ficha &&
-						!tablero->casilleroEstaVacio(profundidadAMover, filaAMover, columnaAMover)){
-					char fichaACambiar = tablero->getCasilla(profundidadAMover, filaAMover, columnaAMover)->mostrarFicha();
-					tablero->setCasilla(profundidad, fila, columna, fichaACambiar);
-					tablero->setCasilla(profundidadAMover, filaAMover, columnaAMover, ficha);
-					tablero->setUltimaPosicion(profundidadAMover, filaAMover, columnaAMover);
+			if(validarCoordenadas(tablero, columna, fila, profundidad)){
+				if(!tablero->casilleroEstaVacio(profundidad, fila, columna) &&
+					tablero->getCasilla(profundidad, fila, columna)->mostrarFicha() != fichaJugadorActual){
+					tablero->getCasilla(profundidad, fila, columna)->habilitar();
 					listo = true;
 				}
 
 				else{
-					cout<<"Movimiento invalido"<<endl;
+					cout<<"No se puede desbloquear este casillero porque la ficha no es del jugador"<<endl;
 				}
 			}
 
@@ -305,6 +282,7 @@ void Carta::intercambiarFichasDeLugar(Tablero *tablero, Cola<Turnos*> *turnos){
 		}
 	}
 }
+
 
 void Carta::utilizarCarta(Tablero *tablero, Cola<Turnos*> *turnos){
 	switch(this->numero % 6){
@@ -325,11 +303,11 @@ void Carta::utilizarCarta(Tablero *tablero, Cola<Turnos*> *turnos){
 		break;
 
 	case 4:
-		this->cambiarFichaDeLugar(tablero, turnos);
+		this->habilitarCasillero(tablero, turnos);
 		break;
 
 	case 5:
-		this->intercambiarFichasDeLugar(tablero, turnos);
+		this->desbloquearFicha(tablero, turnos);
 		break;
 
 	default:

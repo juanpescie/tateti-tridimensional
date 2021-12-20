@@ -8,6 +8,7 @@ enum Estado{
 class Casillero{
 private:
 	char Ficha;
+	char fichaAnterior;
 	Estado estado;
 	Casillero* vecinos[3][3];
 	Casillero* casillerosVecinos[3][3][3];
@@ -53,6 +54,9 @@ public:
 	// pre: ninguna
 	// post: devuelve true si el caracter que tiene el casillero no se el espacio " ", y true si tiene otro caracter
 	bool estaOcupado();
+	// pre: ninguna
+	// post: devuelve el carcater anterior 
+	char mostrarFichaAnterior();
 	// pre: ninguna
 	// post: devuelve true si el casillero tiene como estado igual a HABILITADO, false si no lo esta 
 	bool estaDisponible();

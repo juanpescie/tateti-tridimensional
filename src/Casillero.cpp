@@ -27,6 +27,7 @@ Casillero::~Casillero(){
 }
 
 void Casillero::setFicha(char ficha){
+	this->fichaAnterior = this->Ficha;
 	this->Ficha = ficha;
 }
 
@@ -54,6 +55,10 @@ void Casillero::bloquear(){
 	if(this->estado != BLOQUEADO){
 		this->estado = BLOQUEADO;
 	}
+}
+
+char Casillero::mostrarFichaAnterior(){
+	return this->fichaAnterior;
 }
 
 void Casillero::asignarVecino(int profundidad, int fila, int columna, Casillero* casillero){

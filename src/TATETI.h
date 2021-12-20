@@ -28,9 +28,9 @@ private:
 	void jugadorPierdeUnTurno(Tablero *tablero, Cola<Turnos*> *turnos);
 	void bloquearFicha(Tablero *tablero, Cola<Turnos*> *turnos);
 	void anularCasillero(Tablero *tablero, Cola<Turnos*> *turnos);
-	void cambiarFichaDeLugar(Tablero *tablero, Cola<Turnos*> *turnos);
+	void habilitarCasillero(Tablero *tablero, Cola<Turnos*> *turnos);
 	void volverAtrasUnTurno(Tablero *tablero, Cola<Turnos*> *turnos);
-	void intercambiarFichasDeLugar(Tablero *tablero, Cola<Turnos*> *turnos);
+	void desbloquearFicha(Tablero *tablero, Cola<Turnos*> *turnos);
 };
 class Turnos{
 private:
@@ -49,6 +49,7 @@ private:
 	int cantidadDeFichasPorJugador;
 	int cantidadMaximaCartasPorJugador;
 	Tablero *tablero;
+	Tablero *tableroAnterior;
 	int cantidadDeJugadores;
 	std::string nombreDelArchivoBMP;
 	Cola<Carta*> *cartas;
