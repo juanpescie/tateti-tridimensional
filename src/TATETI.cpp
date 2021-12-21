@@ -518,7 +518,7 @@ void TATETI::pedirNombreDelArchivoBMP(){
 }
 
 void TATETI::crearCartas(){
-	int contadorCartasEmitidas = 1;
+	unsigned int contadorCartasEmitidas = 1;
 
 	while(contadorCartasEmitidas <= this->cantidadDeJugadores * this->getCantidadMaximaCartasPorJugador()){
 		// se agrega una instancia de carta con un numero en el rango de cartas disponibles

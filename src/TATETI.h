@@ -47,7 +47,7 @@ public:
 class TATETI{
 private:
 	int cantidadDeFichasPorJugador;
-	int cantidadMaximaCartasPorJugador;
+	unsigned int cantidadMaximaCartasPorJugador;
 	Tablero *tablero;
 	int cantidadDeJugadores;
 	std::string nombreDelArchivoBMP;
