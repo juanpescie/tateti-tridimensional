@@ -10,7 +10,6 @@ private:
 	char Ficha;
 	char fichaAnterior;
 	Estado estado;
-	Casillero* vecinos[3][3];
 	Casillero* casillerosVecinos[3][3][3];
 
 public:

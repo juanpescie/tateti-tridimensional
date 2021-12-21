@@ -64,7 +64,6 @@ public:
 	// pre: ninguna
 	// post: devuelve la cantidad limite de cartas que puede teener en su cola de cartas
 	int getCantidadMaximaCartasPorJugador();
-	void insertarFicha(int alto, int ancho, int profundidad);
 	// pre: ninguna
 	// post: llama al metodo del tablero mostrarTableroPorCapas y muestra por pantalla las capas
 	void imprimirTableros();

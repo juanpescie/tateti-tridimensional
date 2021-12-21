@@ -12,10 +12,6 @@ Casillero::~Casillero(){
 	// borra los punteros a casilleros de vecinos
 	for(int i = 0; i<3; i++){
 		for(int j = 0 ; j<3; j++){
-			// en este bloque borra el puntero a casillero de la matriz 2 X 2 de vecinos
-			if(this->vecinos[i][j] != NULL){
-					delete this->vecinos[i][j];
-				}
 				for (int k = 0; k <3; k++){
 					// en este bloque borra el puntero a casillero de la matriz 3 X 3 de vecinos
 					if(this->casillerosVecinos[i][j][k] != NULL){
