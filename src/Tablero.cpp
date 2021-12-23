@@ -177,8 +177,8 @@ bool Tablero::casilleroEstaDisponible(int profundidad, int fila, int columna){
 void Tablero::mostrarTableroPorCapas(){
 	for(int i=1; i<=this->getProfundidad(); i++){
 		cout << "Capa numero: " << i << endl;
-		for(int j=1; j<=this->getAncho(); j++){
-			for(int k=1; k<=this->getAltura(); k++){
+		for(int j=1; j<=this->getAltura(); j++){
+			for(int k=1; k<=this->getAncho(); k++){
 				if(this->getCasilla(i,j,k) != NULL){
 					cout << this->getCasilla(i,j,k)->mostrarFicha();
 					cout << "|";
@@ -213,9 +213,9 @@ void Tablero::generarBitMap(std::string nombreDelArchivo){
 
 	for(int i=1; i <= this->profundidad; i++){
 
-		for(int j=1; j <= this->ancho; j++){
+		for(int j=1; j <= this->altura; j++){
 			int contador = 0;
-			for(int k=1; k <= this->altura; k++){
+			for(int k=1; k <= this->ancho; k++){
 				texto[contador++] = this->getCasilla(i, j, k)->mostrarFicha();
 
 				if(k != this->altura){
